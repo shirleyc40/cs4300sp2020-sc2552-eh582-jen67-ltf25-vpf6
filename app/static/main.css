@@ -16,15 +16,27 @@ padding-bottom: 15px;
 text-align:center;
 padding:10px;
 }
-.global-search .form-control {
-width:500px;
-}
+
 .global-search * {
 display:inline-block;
-margin-bottom:0;
 }
 }
-.topcorner{
+
+#inputs{
+    margin-right: 10px;
+    margin-left: 10px;
+}
+#inputs > input {
+    width: 30vw;
+    margin-right: 10px;
+}
+#priceSelect {
+    width: 20vw
+}
+.submit {
+    vertical-align: baseline;
+}
+/* .topcorner{
 position:absolute;
 top:2%;
 right:2%;
@@ -35,4 +47,4 @@ border: none
 }
 .step-links a{
 color: #4285F4;
-}
+} */
