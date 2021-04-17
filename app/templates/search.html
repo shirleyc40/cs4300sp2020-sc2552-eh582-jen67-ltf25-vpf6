@@ -28,15 +28,27 @@
         <br><br>
 
         <div id="inputs">
-            <input id="input1" type="text" name="dietary" class="form-control" placeholder="Dietary Restrictions">
-            <input id="input2" type="text" name="type" class="form-control" placeholder="Type of Food ex: pasta">
+            <div class="text">
+                <label for="input1" class="form-label">Enter your dietary restrictions separate by a comma</label>
+                <input id="input1" type="text" name="dietary" class="form-control" placeholder="Dietary Restrictions"
+                    required>
+            </div>
+            <div class="text">
+                <label for="input2" class="form-label">(Optional) Enter the type of food you want like pasta</label>
+                <input id="input2" type="text" name="type" class="form-control" placeholder="Type of Food ex: pasta">
+            </div>
 
-            <select class="form-select" id="priceSelect" aria-label="Default select example" name="price">
-                <option selected>Select your price preference</option>
-                <option value="15">Less than 15</option>
-                <option value="30">Less than 30</option>
-                <option value="45">Less than 45</option>
-            </select>
+            <div class="text">
+                <label for="priceSelect" class="form-label">(Optional) Price Range </label>
+                <select class="form-select" id="priceSelect" aria-label="Default select example" name="price">
+                    <option selected>Select your price preference</option>
+                    <option value="0, 15">$0 - $15</option>
+                    <option value="15, 30">$15 - $30</option>
+                    <option value="30, 45">$30 - $45</option>
+                    <option value="any">Any</option>
+                </select>
+            </div>
+
 
             <button type="submit" class="btn btn-primary submit"> Submit </button>
 

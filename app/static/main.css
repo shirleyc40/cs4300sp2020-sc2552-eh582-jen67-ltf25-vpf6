@@ -25,16 +25,27 @@ display:inline-block;
 #inputs{
     margin-right: 10px;
     margin-left: 10px;
+    display: flex;
+    justify-content: space-evenly;
 }
-#inputs > input {
+#input1, #input2 {
     width: 30vw;
     margin-right: 10px;
 }
 #priceSelect {
-    width: 20vw
+    width: 20vw;
+    height: fit-content;
 }
 .submit {
     vertical-align: baseline;
+    height:fit-content;
+    margin-top: auto;
+}
+.text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
 }
 /* .topcorner{
 position:absolute;
