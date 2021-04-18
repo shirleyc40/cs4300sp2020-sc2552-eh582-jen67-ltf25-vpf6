@@ -12,16 +12,19 @@
     <h3>{{output_message}}</h3>
     <!-- <h3>{{data}}</h3> -->
     <ol>
-        {% for d, value in data.items() %}
+
+        {% for x in data['res'] %}
         <br>
+        {% for d, value in x.items() %}
         <li>
-            <p>Name: {{d}}<span></span></p>
+            <p>Name: {{d[:-3]}}<span> ({{d[-3:]}} stars)</span></p>
             <ol type="a">
                 {% for item in value %}
                 <li>{{item}}</li>
                 {% endfor %}
             </ol>
         </li>
+        {% endfor %}
 
         {% endfor %}
     </ol>
