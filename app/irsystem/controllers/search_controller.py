@@ -10,6 +10,7 @@ net_id = "Elina Hvirtsman: eh582, Julia Ng: jen67, Shirley Chen: sc2552, Luke Fo
 @irsystem.route('/', methods=['GET'])
 def search():
 	url='http://bonappetit-cs.herokuapp.com/query'
+	# url='http://localhost:5000/query'
 	params = {}
 	dietary = request.args.get('dietary')
 	params['ingredients'] = dietary
@@ -26,7 +27,7 @@ def search():
 		return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data)
 
 	else:
-		output_message = "Your search: no " + dietary + ' ' + "yes " + typeOfFood + " under $" + price
+		output_message = "Dietary Restrictions: " + dietary + ', Kind of Food: ' + typeOfFood + ", Under $" + price
 		# time.sleep(5)
 		data = requests.get(url, params).json()
 		# print(data)
