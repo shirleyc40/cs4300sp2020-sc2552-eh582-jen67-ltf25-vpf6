@@ -9,7 +9,7 @@ net_id = "Elina Hvirtsman: eh582, Julia Ng: jen67, Shirley Chen: sc2552, Luke Fo
 
 @irsystem.route('/', methods=['GET'])
 def search():
-	url='https://bonappetit-cs.herokuapp.com/query'
+	url='http://localhost:5000/query'
 	params = {}
 	dietary = request.args.get('dietary')
 	params['ingredients'] = dietary
