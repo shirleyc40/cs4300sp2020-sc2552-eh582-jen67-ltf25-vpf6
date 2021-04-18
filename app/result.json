@@ -1,0 +1,400 @@
+{
+  "eurasia sushi bar & seafood": {
+    "stars": 4.5,
+    "reviewcount": 395,
+    "hours": {
+      "Monday": "0:0-0:0",
+      "Tuesday": "11:0-22:0",
+      "Wednesday": "11:0-22:0",
+      "Thursday": "16:30-22:0",
+      "Friday": "11:0-22:0",
+      "Saturday": "11:0-22:0",
+      "Sunday": "11:0-22:0"
+    },
+    "categories": "Bars, Nightlife, Cocktail Bars, Seafood, Restaurants, Sushi Bars"
+  },
+  "chutney": {
+    "stars": 3.5,
+    "reviewcount": 63,
+    "hours": {
+      "Monday": "0:0-0:0",
+      "Tuesday": "11:0-21:0",
+      "Wednesday": "11:0-21:0",
+      "Thursday": "11:0-21:0",
+      "Friday": "11:0-20:30",
+      "Saturday": "11:0-21:0",
+      "Sunday": "11:0-21:0"
+    },
+    "categories": "Vegan, Vegetarian, Restaurants, Indian"
+  },
+  "bombay bistro": {
+    "stars": 4.0,
+    "reviewcount": 458,
+    "hours": {
+      "Monday": "17:30-21:0",
+      "Tuesday": "17:30-21:0",
+      "Wednesday": "17:30-21:0",
+      "Thursday": "17:30-21:0",
+      "Friday": "17:30-21:0",
+      "Saturday": "17:30-21:0",
+      "Sunday": "17:30-21:0"
+    },
+    "categories": "Buffets, Nightlife, Restaurants, Indian, Bars"
+  },
+  "austin's habibi": {
+    "stars": 4.0,
+    "reviewcount": 188,
+    "hours": {
+      "Monday": "10:0-22:0",
+      "Tuesday": "10:0-22:0",
+      "Wednesday": "10:0-22:0",
+      "Thursday": "10:0-22:0",
+      "Friday": "10:0-2:30",
+      "Saturday": "10:0-2:30",
+      "Sunday": "10:0-22:0"
+    },
+    "categories": "Falafel, American (New), Middle Eastern, Mediterranean, Food Court, Food Stands, Greek, Restaurants, Lebanese, Food Trucks, Food, Nightlife"
+  },
+  "burro cheese kitchen": {
+    "stars": 4.0,
+    "reviewcount": 10,
+    "hours": {
+      "Thursday": "11:30-20:30",
+      "Friday": "11:30-20:30",
+      "Saturday": "8:0-20:30",
+      "Sunday": "8:0-16:0"
+    },
+    "categories": "Restaurants, Food Trucks, American (Traditional), Sandwiches, Food Stands, Food"
+  },
+  "china palace": {
+    "stars": 3.5,
+    "reviewcount": 210,
+    "hours": {
+      "Monday": "16:30-21:30",
+      "Tuesday": "16:30-21:30",
+      "Wednesday": "16:30-21:30",
+      "Thursday": "16:30-21:30",
+      "Friday": "16:30-21:30",
+      "Saturday": "12:0-21:0",
+      "Sunday": "12:0-21:0"
+    },
+    "categories": "Buffets, Chinese, Restaurants"
+  },
+  "halal time": {
+    "stars": 5.0,
+    "reviewcount": 124,
+    "hours": {
+      "Tuesday": "18:0-4:0",
+      "Wednesday": "18:0-4:0",
+      "Thursday": "18:0-4:0",
+      "Friday": "18:0-4:0",
+      "Saturday": "18:0-4:0",
+      "Sunday": "18:0-4:0"
+    },
+    "categories": "Arabian, Falafel, Middle Eastern, Mediterranean, Halal, Food, Vegan, Food Trucks, Restaurants"
+  },
+  "china express": {
+    "stars": 3.0,
+    "reviewcount": 93,
+    "hours": {
+      "Monday": "11:0-22:0",
+      "Tuesday": "11:0-22:0",
+      "Wednesday": "11:0-22:0",
+      "Thursday": "11:0-22:0",
+      "Friday": "11:0-22:0",
+      "Saturday": "11:0-22:0",
+      "Sunday": "15:0-22:0"
+    },
+    "categories": "Restaurants, Buffets, Chinese"
+  },
+  "brazas taco house": {
+    "stars": 4.5,
+    "reviewcount": 65,
+    "hours": {
+      "Monday": "7:0-15:0",
+      "Tuesday": "7:0-15:0",
+      "Wednesday": "7:0-15:0",
+      "Thursday": "7:0-15:0",
+      "Friday": "7:0-15:0",
+      "Saturday": "8:0-15:0"
+    },
+    "categories": "Restaurants, Tacos, Mexican, Tex-Mex"
+  },
+  "china kitchen": {
+    "stars": 2.0,
+    "reviewcount": 79,
+    "hours": null,
+    "categories": "Restaurants, Chinese"
+  },
+  "el taquito": {
+    "stars": 4.0,
+    "reviewcount": 450,
+    "hours": {
+      "Monday": "9:0-0:0",
+      "Tuesday": "9:0-0:0",
+      "Wednesday": "9:0-0:0",
+      "Thursday": "9:0-3:0",
+      "Friday": "8:0-4:0",
+      "Saturday": "8:0-4:0",
+      "Sunday": "8:0-0:0"
+    },
+    "categories": "Food, Nightlife, Mexican, Restaurants"
+  },
+  "flaming pizza": {
+    "stars": 4.0,
+    "reviewcount": 146,
+    "hours": {
+      "Monday": "0:0-0:0",
+      "Tuesday": "11:0-22:0",
+      "Wednesday": "11:0-22:0",
+      "Thursday": "11:0-22:0",
+      "Friday": "11:0-22:0",
+      "Saturday": "11:0-22:0",
+      "Sunday": "11:0-22:0"
+    },
+    "categories": "Restaurants, Food, Pizza"
+  },
+  "giovanni's pizza stand": {
+    "stars": 4.5,
+    "reviewcount": 215,
+    "hours": {
+      "Monday": "0:0-0:0",
+      "Tuesday": "7:0-15:30",
+      "Wednesday": "7:0-22:0",
+      "Thursday": "7:0-22:0",
+      "Friday": "7:0-22:0",
+      "Saturday": "7:0-22:0",
+      "Sunday": "16:0-21:0"
+    },
+    "categories": "Specialty Food, Salad, Pasta Shops, Food, Restaurants, Food Stands, Pizza"
+  },
+  "don mario mexican restaurant": {
+    "stars": 4.0,
+    "reviewcount": 232,
+    "hours": {
+      "Monday": "9:0-21:30",
+      "Tuesday": "9:0-21:30",
+      "Wednesday": "9:0-21:30",
+      "Thursday": "9:0-21:30",
+      "Friday": "9:0-22:0",
+      "Saturday": "8:0-22:0",
+      "Sunday": "8:0-21:0"
+    },
+    "categories": "Mexican, Restaurants"
+  },
+  "dirty glove midwest bbq": {
+    "stars": 4.5,
+    "reviewcount": 22,
+    "hours": {
+      "Monday": "22:0-2:0",
+      "Wednesday": "22:0-2:0",
+      "Friday": "22:0-2:0"
+    },
+    "categories": "Food Trucks, Event Planning & Services, American (Traditional), Caterers, Restaurants, Food, Barbeque"
+  },
+  "abo youssef": {
+    "stars": 4.5,
+    "reviewcount": 447,
+    "hours": {
+      "Monday": "17:0-21:0",
+      "Tuesday": "17:0-21:0",
+      "Wednesday": "17:0-21:0",
+      "Thursday": "17:0-21:0",
+      "Friday": "15:0-22:0",
+      "Saturday": "17:0-21:0"
+    },
+    "categories": "Halal, Mediterranean, Restaurants, Food, Food Trucks"
+  },
+  "four brothers": {
+    "stars": 4.5,
+    "reviewcount": 182,
+    "hours": {
+      "Monday": "0:0-0:0",
+      "Tuesday": "10:0-6:0",
+      "Wednesday": "10:0-6:0",
+      "Thursday": "10:0-6:0",
+      "Friday": "10:0-6:0",
+      "Saturday": "10:0-6:0",
+      "Sunday": "10:0-6:0"
+    },
+    "categories": "Food Trucks, Food, Latin American, Venezuelan, Sandwiches, Restaurants"
+  },
+  "belly up": {
+    "stars": 4.5,
+    "reviewcount": 68,
+    "hours": {
+      "Monday": "15:0-1:0",
+      "Tuesday": "15:0-1:0",
+      "Wednesday": "15:0-1:0",
+      "Thursday": "15:0-1:0",
+      "Friday": "14:0-2:0",
+      "Saturday": "11:0-2:0",
+      "Sunday": "11:0-2:0"
+    },
+    "categories": "Food, American (New), Food Trucks, Restaurants, Salad, Sandwiches"
+  },
+  "catfish parlour": {
+    "stars": 3.5,
+    "reviewcount": 234,
+    "hours": {
+      "Monday": "11:0-20:0",
+      "Tuesday": "11:0-20:0",
+      "Wednesday": "11:0-20:0",
+      "Thursday": "11:0-20:0",
+      "Friday": "11:0-21:0",
+      "Saturday": "11:0-21:0"
+    },
+    "categories": "Seafood, Restaurants, American (Traditional), Seafood Markets, Food, Specialty Food"
+  },
+  "crepe crazy": {
+    "stars": 4.5,
+    "reviewcount": 477,
+    "hours": {
+      "Monday": "0:0-0:0",
+      "Tuesday": "9:0-20:0",
+      "Wednesday": "9:0-15:0",
+      "Thursday": "9:0-15:0",
+      "Friday": "9:0-20:0",
+      "Saturday": "9:0-20:0",
+      "Sunday": "9:0-16:0"
+    },
+    "categories": "Restaurants, Modern European, Food, Creperies"
+  },
+  "buffet king": {
+    "stars": 2.5,
+    "reviewcount": 187,
+    "hours": {
+      "Monday": "11:0-21:30",
+      "Tuesday": "11:0-21:30",
+      "Wednesday": "11:0-21:30",
+      "Thursday": "11:0-21:30",
+      "Friday": "11:0-22:0",
+      "Saturday": "11:0-22:0",
+      "Sunday": "11:0-21:0"
+    },
+    "categories": "Chinese, Buffets, Seafood, Restaurants"
+  },
+  "biryani-n-grill": {
+    "stars": 3.0,
+    "reviewcount": 210,
+    "hours": {
+      "Tuesday": "11:0-22:0",
+      "Wednesday": "11:0-22:0",
+      "Thursday": "11:0-22:0",
+      "Friday": "11:0-22:0",
+      "Saturday": "11:0-22:0",
+      "Sunday": "11:0-22:0"
+    },
+    "categories": "Salad, Indian, American (Traditional), Restaurants, Soup, Food, Desserts, Bakeries"
+  },
+  "dos batos": {
+    "stars": 4.0,
+    "reviewcount": 491,
+    "hours": {
+      "Monday": "11:0-19:0",
+      "Tuesday": "11:0-19:0",
+      "Wednesday": "11:0-19:0",
+      "Thursday": "11:0-19:0",
+      "Friday": "11:0-19:0",
+      "Saturday": "11:0-19:0",
+      "Sunday": "11:0-15:0"
+    },
+    "categories": "Restaurants, Tacos, Tex-Mex, Mexican"
+  },
+  "cornucopia popcorn": {
+    "stars": 4.0,
+    "reviewcount": 23,
+    "hours": {
+      "Monday": "0:0-0:0",
+      "Tuesday": "11:0-17:0",
+      "Wednesday": "11:0-17:0",
+      "Thursday": "11:0-17:0",
+      "Friday": "11:0-17:0",
+      "Saturday": "11:0-17:0",
+      "Sunday": "12:0-18:0"
+    },
+    "categories": "Specialty Food, Food, Popcorn Shops"
+  },
+  "cool beans": {
+    "stars": 4.0,
+    "reviewcount": 87,
+    "hours": {
+      "Monday": "11:0-23:0",
+      "Tuesday": "11:0-23:0",
+      "Wednesday": "11:0-23:0",
+      "Thursday": "11:0-23:0",
+      "Friday": "11:0-23:0",
+      "Saturday": "11:0-0:0",
+      "Sunday": "11:0-23:0"
+    },
+    "categories": "Food, Restaurants, Mexican, Food Trucks, Vegetarian, Vegan"
+  },
+  "big daddy's burgers & bar": {
+    "stars": 3.5,
+    "reviewcount": 384,
+    "hours": {
+      "Monday": "11:0-2:0",
+      "Tuesday": "11:0-2:0",
+      "Wednesday": "11:0-2:0",
+      "Thursday": "11:0-2:0",
+      "Friday": "11:0-2:0",
+      "Saturday": "11:0-2:0",
+      "Sunday": "11:0-2:0"
+    },
+    "categories": "American (Traditional), Food, Restaurants, Nightlife, Burgers, Bars"
+  },
+  "chago's caribbean cuisine": {
+    "stars": 4.5,
+    "reviewcount": 783,
+    "hours": {
+      "Wednesday": "16:0-20:0",
+      "Thursday": "16:0-20:0",
+      "Friday": "16:0-20:0",
+      "Saturday": "12:0-20:0",
+      "Sunday": "12:0-18:0"
+    },
+    "categories": "Caribbean, Brazilian, Restaurants, Puerto Rican, Sandwiches, Cuban"
+  },
+  "double dave's pizzaworks": {
+    "stars": 3.5,
+    "reviewcount": 56,
+    "hours": {
+      "Monday": "11:0-0:0",
+      "Tuesday": "11:0-0:0",
+      "Wednesday": "11:0-0:0",
+      "Thursday": "11:0-0:0",
+      "Friday": "11:0-0:0",
+      "Saturday": "11:0-0:0",
+      "Sunday": "11:0-22:0"
+    },
+    "categories": "Italian, Bars, Restaurants, Pizza, Sports Bars, Nightlife"
+  },
+  "hoboken pie": {
+    "stars": 3.5,
+    "reviewcount": 556,
+    "hours": {
+      "Monday": "0:0-0:0",
+      "Tuesday": "11:0-2:30",
+      "Wednesday": "11:0-22:0",
+      "Thursday": "11:0-2:30",
+      "Friday": "11:0-2:30",
+      "Saturday": "12:0-2:30",
+      "Sunday": "12:0-2:30"
+    },
+    "categories": "Vegan, Comfort Food, Food Delivery Services, Italian, Pizza, Food, Restaurants, Nightlife"
+  },
+  "bombay to kathmandu kitchen": {
+    "stars": 4.0,
+    "reviewcount": 169,
+    "hours": {
+      "Monday": "0:0-0:0",
+      "Tuesday": "11:0-23:0",
+      "Wednesday": "11:0-23:0",
+      "Thursday": "11:0-23:0",
+      "Friday": "11:0-23:0",
+      "Saturday": "11:0-23:0",
+      "Sunday": "11:0-23:0"
+    },
+    "categories": "Indian, Soup, Himalayan/Nepalese, Restaurants"
+  }
+}
