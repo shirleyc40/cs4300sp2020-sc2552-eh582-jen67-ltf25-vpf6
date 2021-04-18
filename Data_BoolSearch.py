@@ -211,3 +211,116 @@ def boolean_search(query_word,excluded_word, inverted_index, price_range):
 # search = boolean_search(query_want,query_dont_want,inv_idx)
 # print(search)
 # print(items[search[0]])
+
+def new_inv_ind(doc_inds, documents, inv_ind_func):
+    """ Create a new inverted index that only contains terms in the list of documents
+    returned from a boolean search
+    
+    Arguments
+    =========
+    
+    doc_inds: list of ints,
+        The indices of items in the items list. Result of the previous Boolean search
+        
+    documents: np.array,
+        list of dictionaries representing each document. NEEDS TO BE NUMPY
+    
+    inv_ind_func: function,
+        The function to create a inverted index. build_inverted_index(msgs)
+        
+    
+    Returns
+    =======
+    
+    inverted_index: dict
+        For each term, the index contains 
+        a sorted list of tuples (doc_id, count_of_term_in_doc)
+        such that tuples with smaller doc_ids appear first:
+        inverted_index[term] = [(d1, tf1), (d2, tf2), ...]
+        
+    """
+    
+    new_docs = documents[doc_inds]
+    new_inv_ind = inv_ind_func(new_docs)
+    return new_inv_ind
+
+
+def term_sort(want_query,not_query,inv_ind,tokenize_func):
+    """ Create two sorted lists of terms from the query, by the number of docs that use the term
+    
+    Arguments
+    =========
+    
+    want_query: list,
+        The query of wanted terms.
+        
+    not_query: list,
+        The query of terms not wanted
+    
+    inv_ind: inverted index,
+    
+    tokenize_func: tokenize function,
+        
+    
+    Returns
+    =======
+    
+    wants: 
+        List of (wanted terms,term freq) sorted by term frequency
+        
+    nots:
+        List of (not wanted terms,term) sorted by term frequency
+        
+    """
+    
+#     want_toks = tokenize_func(want_query)
+#     not_toks = tokenize_func(not_query)
+    
+    wants = []
+    for tok in want_query:
+        l = len(inv_ind[tok])
+        wants.append((tok,l))
+    wants.sort(key = lambda x: x[1]) 
+    
+    nots = []
+    for tok in not_query:
+        l = len(inv_ind[tok])
+        nots.append((tok,l))
+    nots.sort(key = lambda x: x[1])
+    
+    return wants,nots
+    
+
+
+def main(want_query,not_query,price_range,item_list):
+    """
+    BIG ASSUMPTION FOR RIGHT NOW: the wants and exclude lists are same length
+    
+    returns:
+        documents: list,
+            A list of documents that match the query terms
+    """
+    #get inverted index
+    inv_ind = build_inverted_index(item_list) 
+    
+    #get sorted lists of query terms
+    want_words,not_want_words = term_sort(want_query,not_query,inv_ind,tokenize)
+        
+    #loop through boolean searches
+    documents = item_list
+    for i in range(len(want_words)):
+        doc_list = boolean_search(want_words[i][0],not_want_words[i][0],inv_ind,price_range)
+        documents = documents[doc_list] 
+        print(doc_list)
+        inv_ind = new_inv_ind(doc_list, item_list, build_inverted_index)
+        
+    return documents
+    
+    
+
+#example:
+# qw = ['noodle','noodle']
+# qn = ['crispy','egg']
+
+# r = main(qw,qn,100,items2)
+# print(r)
