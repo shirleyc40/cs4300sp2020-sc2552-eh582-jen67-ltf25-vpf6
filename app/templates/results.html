@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title></title>
-        <link rel="stylesheet" href="">
-    </head>
-    <body>
-        {% if data %}
-        <h3>{{output_message}}</h3> 
-        <ol>
-        {% for d in data %}  
-            <br>
-                <li>
-                    <p>Name: <span>X stars</span></p> 
-                    <ol type = "a">
-                        <li>Something</li>
-                    </ol>
-                </li>
-            
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+    {% if data %}
+    <h3>{{output_message}}</h3>
+    <!-- <h3>{{data}}</h3> -->
+    <ol>
+        {% for d, value in data.items() %}
+        <br>
+        <li>
+            <p>Name: {{d}}<span></span></p>
+            <ol type="a">
+                {% for item in value %}
+                <li>{{item}}</li>
+                {% endfor %}
+            </ol>
+        </li>
+
         {% endfor %}
-        </ol>
+    </ol>
     {% endif %}
 
-    </body>
+</body>
+
 </html>

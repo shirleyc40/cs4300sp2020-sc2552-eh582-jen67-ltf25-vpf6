@@ -1,46 +1,46 @@
 import math
 import numpy as np
 import csv
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import re
 import json
 
-#getting list of all restaurants in kaggle dataset
-restaurants = []
-with open('restaurants.csv', 'r', encoding="utf8") as f:
-    reader_restaurants = csv.reader(f, delimiter = ',')
-    for row in reader_restaurants:
-        if re.findall("austin$",row[1]):
-            if row[0] == 'BBQ at Frankie�s':
-                row[0] = "BBQ at Frankie's"
-            restaurants.append(row[0])
+# #getting list of all restaurants in kaggle dataset
+# restaurants = []
+# with open('restaurants.csv', 'r', encoding="utf8") as f:
+#     reader_restaurants = csv.reader(f, delimiter = ',')
+#     for row in reader_restaurants:
+#         if re.findall("austin$",row[1]):
+#             if row[0] == 'BBQ at Frankie�s':
+#                 row[0] = "BBQ at Frankie's"
+#             restaurants.append(row[0])
 
-#getting list of all businesses in yelp dataset
-yelp = []
-file1 = open("yelp_academic_dataset_business.json", 'r', encoding="utf8")
-Lines = file1.readlines()
+# #getting list of all businesses in yelp dataset
+# yelp = []
+# file1 = open("yelp_academic_dataset_business.json", 'r', encoding="utf8")
+# Lines = file1.readlines()
  
 
-    # Strips the newline character
-for line in Lines:
-    yelp.append(json.loads(line))
+#     # Strips the newline character
+# for line in Lines:
+#     yelp.append(json.loads(line))
 
 
-#get dictionary of restaurants
-result = dict()
+# #get dictionary of restaurants
+# result = dict()
 
-for rest in yelp:
-    if rest['name'] in restaurants and rest['city'] == 'Austin':
-        name = rest['name'].lower()
-        result[name] = dict()
+# for rest in yelp:
+#     if rest['name'] in restaurants and rest['city'] == 'Austin':
+#         name = rest['name'].lower()
+#         result[name] = dict()
         
-        result[name]['stars'] = rest['stars']
-        result[name]['reviewcount'] = rest['review_count']
-        result[name]['hours'] = rest['hours']
-        result[name]['categories'] = rest['categories']
+#         result[name]['stars'] = rest['stars']
+#         result[name]['reviewcount'] = rest['review_count']
+#         result[name]['hours'] = rest['hours']
+#         result[name]['categories'] = rest['categories']
 
 
-#function to tokenize description
+# #function to tokenize description
 def tokenize(text):
     """Returns a list of words that make up the text.
     
@@ -55,42 +55,42 @@ def tokenize(text):
     words = re.findall(r'[a-z]+',t)
     return words
 
-#list of items with tokens
-items = []
-ID = 0
-with open('menu_items.csv', 'r', encoding="utf8") as f:
-    reader_menus = csv.reader(f, delimiter = ',')
-    for row in reader_menus:
-        if row[0] in result.keys():
-            if len(row[3]) > 3 and len(row[3]) < 200:
-                item = dict()
-                item['ID'] = ID
-                item['restaurant'] = row[0]
-                item['item_name'] = row[2] 
-                item['description'] = row[2] + ' : ' + row[3]
-                item['toks'] = tokenize(item['description'])
-                item['price'] = row[4]
-                items.append(item)
-                ID += 1
-
-#list of items for database
-items2 = []
-
-with open('menu_items.csv', 'r', encoding="utf8") as f:
-    reader_menus = csv.reader(f, delimiter = ',')
-    for row in reader_menus:
-        if row[0] in result.keys():
-            if len(row[3]) > 3 and len(row[3]) < 200:
-                item = dict()
-                item['restaurant'] = row[0]
-                item['name'] = row[2] 
-                item['description'] = row[2] + ' : ' + row[3]
+# #list of items with tokens
+# items = []
+# ID = 0
+# with open('menu_items.csv', 'r', encoding="utf8") as f:
+#     reader_menus = csv.reader(f, delimiter = ',')
+#     for row in reader_menus:
+#         if row[0] in result.keys():
+#             if len(row[3]) > 3 and len(row[3]) < 200:
+#                 item = dict()
+#                 item['ID'] = ID
+#                 item['restaurant'] = row[0]
+#                 item['item_name'] = row[2] 
+#                 item['description'] = row[2] + ' : ' + row[3]
 #                 item['toks'] = tokenize(item['description'])
-                item['price'] = row[4]
-                items.append(item)
+#                 item['price'] = row[4]
+#                 items.append(item)
+#                 ID += 1
+
+# #list of items for database
+# items2 = []
+
+# with open('menu_items.csv', 'r', encoding="utf8") as f:
+#     reader_menus = csv.reader(f, delimiter = ',')
+#     for row in reader_menus:
+#         if row[0] in result.keys():
+#             if len(row[3]) > 3 and len(row[3]) < 200:
+#                 item = dict()
+#                 item['restaurant'] = row[0]
+#                 item['name'] = row[2] 
+#                 item['description'] = row[2] + ' : ' + row[3]
+# #                 item['toks'] = tokenize(item['description'])
+#                 item['price'] = row[4]
+#                 items2.append(item)
 
 
-#creating json of items
+# #creating json of items
 
 # with open('items.json', 'w') as fp:
 #     json.dump(items2, fp)
@@ -172,7 +172,7 @@ def boolean_search(query_word,excluded_word, inverted_index):
         
     """
     # YOUR CODE HERE
-    M = [] #merdged list
+    M = [] #merged list
     A = [doc_count[0] for doc_count in inverted_index[query_word.lower()]] #query
     B = [doc_count[0] for doc_count in inverted_index[excluded_word.lower()]] #excluded
     
@@ -195,8 +195,9 @@ def boolean_search(query_word,excluded_word, inverted_index):
         if A_pnt >= A_end or B_pnt >= B_end:
             at_end = True
     
-    if A_pnt < A_end:
-        M.append(A[A_pnt:])
+    while A_pnt < A_end:
+        M.append(A[A_pnt])
+        A_pnt += 1
     return M
 
 

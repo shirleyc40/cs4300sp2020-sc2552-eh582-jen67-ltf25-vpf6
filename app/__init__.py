@@ -1,21 +1,189 @@
 # Gevent needed for sockets
 from gevent import monkey
 monkey.patch_all()
+from Data_BoolSearch import *
 
 # Imports
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, make_response, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO
+import json
+from marshmallow_sqlalchemy import ModelSchema
+from marshmallow import fields
+
+from collections import Counter
 
 # Configure app
 socketio = SocketIO()
 app = Flask(__name__)
 app.config.from_object(os.environ["APP_SETTINGS"])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ["DATABASE_URL"]
 
 # DB
 db = SQLAlchemy(app)
+
+# Tables
+class Restaurants(db.Model):
+  __tablename__ = "restaurants"
+  id = db.Column(db.String, primary_key=True)
+  stars = db.Column(db.Float, nullable=False)
+  reviewcount = db.Column(db.Integer, nullable=False)
+  hours = db.Column(db.String, nullable=False)
+  categories = db.Column(db.String, nullable=False)
+  
+  def create(self):
+    db.session.add(self)
+    db.session.commit()
+    return self
+
+  def __init__(self, stars, hours, reviewcount, categories):
+    self.stars = stars 
+    self.hours = hours
+    self.reviewcount = reviewcount
+    self.categories = categories
+
+  def __repr__(self):
+    return '' % self.id
+
+class MenuItems(db.Model):
+  __tablename__ = "items"
+  id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+  name = db.Column(db.String, nullable=False)
+  description = db.Column(db.String, nullable=False)
+  restaurant = db.Column(db.String, db.ForeignKey("restaurants.id"))
+  price = db.Column(db.String, nullable=False)
+
+  def create(self):
+    db.session.add(self)
+    db.session.commit()
+    return self
+
+  def __init__(self, name, description, restaurant, price):
+    self.name = name
+    self.description = description
+    self.restaurant = restaurant
+    self.price = price
+
+  def __repr__(self):
+    return '' % self.id
+
+db.create_all()
+
+# Schemas
+class RestaurantSchema(ModelSchema):
+    class Meta:
+        model = Restaurants
+        sqla_session = db.session
+
+    id = fields.String()
+    stars = fields.Number(required=True)
+    reviewcount = fields.Number(required=True)
+    hours = fields.String(required=True)
+    categories = fields.String(required=True)
+
+
+class MenuItemsSchema(ModelSchema):
+    class Meta:
+        model = MenuItems
+        sqla_session = db.session
+
+    id = fields.Number()
+    name = fields.String(required=True)
+    price = fields.String(required=True)
+    description = fields.String(required=True)
+    restaurant = fields.String()
+
+# Populating Database
+# with open('app/result.json') as f:
+#   data = json.load(f)
+# for name in data:
+  
+#   restaurant_schema = RestaurantSchema()
+#   data[name]['hours'] = 'hey'
+#   print(data[name])
+#   # data[name]['id'] = name
+#   # r = Restaurants(stars=4.5, reviewcount=90, categories='hi')
+#   restaurant = restaurant_schema.load(data[name])
+#   restaurant.id = name
+#   result = restaurant_schema.dump(restaurant.create())
+
+# with open('app/items.json') as f:
+#   data = json.load(f)
+# for item in data:
+#   items_schema = MenuItemsSchema()
+#   item = items_schema.load(item)
+#   result = items_schema.dump(item.create())
+
+
+# Routes
+@app.route('/restaurants', methods=['GET'])
+def test():
+    get_restaurants = Restaurants.query.all()
+    restuarant_schema = RestaurantSchema(many=True)
+    restaurants = restuarant_schema.dump(get_restaurants)
+    return make_response(jsonify({"restaurants": restaurants})) # return all doctors with their reviews
+
+@app.route('/items', methods=['GET'])
+def test2():
+    get_items = MenuItems.query.all()
+    items_schema = MenuItemsSchema(many=True)
+    items = items_schema.dump(get_items)
+    return make_response(jsonify({"items": items})) # return all doctors with their reviews
+
+@app.route('/query', methods=['GET'])
+def process_query():
+  food_type, ingredients, price_range = '', '', ''
+  if 'food_type' in request.args:
+    food_type = request.args['food_type']
+  if 'ingredients' in request.args:
+    ingredients = request.args['ingredients']
+  else:
+    # raise HTTPException(msg='Invalid URL params', response_code=400)
+  if 'price_range' in request.args:
+    price_range = request.args['price_range']
+
+  # print(ingredients)
+  query_toks = tokenize(ingredients)
+
+  get_items = MenuItems.query.all()
+  items_schema = MenuItemsSchema(many=True)
+  items = items_schema.dump(get_items)
+  print("num of items: ", len(items))
+
+  inverted_idx = dict()
+
+  for item in items:
+    toks = tokenize(item['description'])
+    counts = Counter(toks)
+    for word, value in counts.items():
+      if word in inverted_idx.keys():
+        inverted_idx[word].append((item['id'],item['restaurant'],value))
+      else:
+        inverted_idx[word] = [(item['id'],item['restaurant'], value)]
+
+  result = {}
+  # print(inverted_indx)
+  for q_tok in query_toks:
+    M = boolean_search(food_type, q_tok, inverted_idx)
+
+  counter = 0
+  for item_id in M:
+    get_item = MenuItems.query.get(item_id)
+    item_schema = MenuItemsSchema()
+    counter += 1
+    # print(counter)
+    items = item_schema.dump(get_item)
+
+    restaurant = items['restaurant']
+    if restaurant in result:
+      if len(result[restaurant])<5:
+        result[restaurant].append(items)
+    else:
+      result[restaurant] = [items]
+  return make_response(result)
+
 
 # Import + Register Blueprints
 from app.accounts import accounts as accounts
