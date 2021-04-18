@@ -146,7 +146,7 @@ def build_inverted_index(msgs):
     return inverted_indx
 
 
-def boolean_search(query_word,excluded_word, inverted_index):
+def boolean_search(query_word,excluded_word, inverted_index, price_range):
     """ Search the collection of documents for the given query_word 
         provided that the documents do not include the excluded_word
     
@@ -176,6 +176,7 @@ def boolean_search(query_word,excluded_word, inverted_index):
     A = [doc_count[0] for doc_count in inverted_index[query_word.lower()]] #query
     B = [doc_count[0] for doc_count in inverted_index[excluded_word.lower()]] #excluded
     
+    a = [doc_count[1] for doc_count in inverted_index[query_word.lower()]] #query
     
     at_end = False
     A_pnt = 0
@@ -187,7 +188,7 @@ def boolean_search(query_word,excluded_word, inverted_index):
             A_pnt += 1
             B_pnt += 1
         else:
-            if A[A_pnt] < B[B_pnt]:
+            if A[A_pnt] < B[B_pnt] and a[A_pnt] < price_range:
                 M.append(A[A_pnt])
                 A_pnt += 1
             else:
@@ -196,7 +197,8 @@ def boolean_search(query_word,excluded_word, inverted_index):
             at_end = True
     
     while A_pnt < A_end:
-        M.append(A[A_pnt])
+        if a[A_pnt] < price_range:
+            M.append(A[A_pnt])
         A_pnt += 1
     return M
 

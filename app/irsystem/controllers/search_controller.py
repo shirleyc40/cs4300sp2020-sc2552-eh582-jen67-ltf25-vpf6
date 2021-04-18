@@ -17,7 +17,8 @@ def search():
 	typeOfFood = request.args.get('type')
 	#url += '&food_type=' + typeOfFood
 	params['food_type'] = typeOfFood
- 	# price = request.args.get('price')
+	price = request.args.get('price')
+	params['price_range'] = price
 	if not dietary:
 		data = []
 		output_message = ''

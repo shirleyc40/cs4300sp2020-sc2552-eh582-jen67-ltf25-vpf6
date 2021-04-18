@@ -13,6 +13,7 @@ from marshmallow_sqlalchemy import ModelSchema
 from marshmallow import fields
 
 from collections import Counter
+import re
 
 # Configure app
 socketio = SocketIO()
@@ -32,7 +33,7 @@ class Restaurants(db.Model):
   reviewcount = db.Column(db.Integer, nullable=False)
   hours = db.Column(db.String, nullable=False)
   categories = db.Column(db.String, nullable=False)
-  
+
   def create(self):
     db.session.add(self)
     db.session.commit()
@@ -141,8 +142,11 @@ def process_query():
     ingredients = request.args['ingredients']
   else:
     # raise HTTPException(msg='Invalid URL params', response_code=400)
+    print("hey")
   if 'price_range' in request.args:
-    price_range = request.args['price_range']
+    price_range = int(request.args['price_range'])
+  else:
+    price_range = float('inf')
 
   # print(ingredients)
   query_toks = tokenize(ingredients)
@@ -159,14 +163,15 @@ def process_query():
     counts = Counter(toks)
     for word, value in counts.items():
       if word in inverted_idx.keys():
-        inverted_idx[word].append((item['id'],item['restaurant'],value))
+        inverted_idx[word].append((item['id'],float(re.findall("[^\$]*$", item['price'])[0]),value))
       else:
-        inverted_idx[word] = [(item['id'],item['restaurant'], value)]
+        inverted_idx[word] = [(item['id'],float(re.findall("[^\$]*$", item['price'])[0]), value)]
+
 
   result = {}
   # print(inverted_indx)
   for q_tok in query_toks:
-    M = boolean_search(food_type, q_tok, inverted_idx)
+    M = boolean_search(food_type, q_tok, inverted_idx, price_range)
 
   counter = 0
   for item_id in M:
