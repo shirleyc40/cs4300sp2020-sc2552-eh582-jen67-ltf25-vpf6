@@ -175,15 +175,14 @@ def boolean_search(query_word,excluded_word, inverted_index, price_range):
     M = [] #merged list
     A = [doc_count[0] for doc_count in inverted_index[query_word.lower()]] #query
     B = [doc_count[0] for doc_count in inverted_index[excluded_word.lower()]] #excluded
-    
+
     a = [doc_count[1] for doc_count in inverted_index[query_word.lower()]] #query
     
-    at_end = False
     A_pnt = 0
     B_pnt = 0
     A_end = len(A)
     B_end = len(B)
-    while at_end == False:
+    while A_pnt < A_end and  B_pnt < B_end:
         if A[A_pnt] == B[B_pnt]:
             A_pnt += 1
             B_pnt += 1
@@ -193,11 +192,9 @@ def boolean_search(query_word,excluded_word, inverted_index, price_range):
                 A_pnt += 1
             else:
                 B_pnt += 1
-        if A_pnt >= A_end or B_pnt >= B_end:
-            at_end = True
     
     while A_pnt < A_end:
-        if a[A_pnt] < price_range:
+        if a[A_pnt] < price_range and A[A_pnt] not in B:
             M.append(A[A_pnt])
         A_pnt += 1
     return M
