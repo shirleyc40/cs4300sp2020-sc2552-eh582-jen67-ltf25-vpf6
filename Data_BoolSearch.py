@@ -74,7 +74,7 @@ def tokenize(text):
 #                 ID += 1
 
 # #list of items for database
-# items2 = []
+# items2 = np.array([])
 
 # with open('menu_items.csv', 'r', encoding="utf8") as f:
 #     reader_menus = csv.reader(f, delimiter = ',')
@@ -84,10 +84,11 @@ def tokenize(text):
 #                 item = dict()
 #                 item['restaurant'] = row[0]
 #                 item['name'] = row[2] 
-#                 item['description'] = row[2] + ' : ' + row[3]
+# #                 item['description'] = row[2] + ' : ' + row[3]
+#                 item['description'] = row[3]
 # #                 item['toks'] = tokenize(item['description'])
 #                 item['price'] = row[4]
-#                 items2.append(item)
+#                 np.append(items2,item)
 
 
 # #creating json of items
@@ -136,7 +137,10 @@ def build_inverted_index(msgs):
     inverted_indx = dict()
 
     for doc_id,msg in enumerate(msgs):
-        counts = Counter(msg['toks'])
+        descrip = msg['name'] + ' : ' + msg['description']
+        tokens = tokenize(descrip)
+        # counts = Counter(msg['toks'])
+        counts = Counter(tokens)
         for word, value in counts.items():
             if word in inverted_indx.keys():
                 inverted_indx[word].append((doc_id,value))
