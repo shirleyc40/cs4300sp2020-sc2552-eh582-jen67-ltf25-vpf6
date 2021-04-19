@@ -59,3 +59,29 @@ border: none
 .step-links a{
 color: #4285F4;
 } */
+
+.result {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.query {
+    margin: 20px 10px 0px 10px;
+}
+.results-label {
+    margin: 20px 10px 0px 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.query > span {
+    font-weight: bold;
+}
+.rest-title {
+    font-size: 20px;
+}
+.rating {
+    margin-left: 20px
+}
+.fa-star {
+    color: gold
+}

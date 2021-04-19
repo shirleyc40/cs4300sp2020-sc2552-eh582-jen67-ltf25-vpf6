@@ -167,17 +167,14 @@ def process_query():
       else:
         inverted_idx[word] = [(item['id'],float(re.findall("[^\$]*$", item['price'])[0]), value)]
 
-
   result = {}
   # print(inverted_indx)
   for q_tok in query_toks:
     M = boolean_search(food_type, q_tok, inverted_idx, price_range)
 
-  counter = 0
   for item_id in M:
     get_item = MenuItems.query.get(item_id)
     item_schema = MenuItemsSchema()
-    counter += 1
     # print(counter)
     items = item_schema.dump(get_item)
 
@@ -187,7 +184,24 @@ def process_query():
         result[restaurant].append(items)
     else:
       result[restaurant] = [items]
-  return make_response(result)
+
+  sorted_restaurants = [] 
+  for rest in result:
+    get_rest = Restaurants.query.get(rest)
+    rest_schema = RestaurantSchema()
+    restaurant = rest_schema.dump(get_rest)
+    stars, review_count = restaurant['stars'], restaurant['reviewcount']
+    sorted_restaurants.append((rest, stars, review_count))
+
+  p = sorted(sorted_restaurants, key=lambda x: (-x[1], -x[2]))
+
+  counter = 0
+  total = []
+  for rest, star, count in p:
+    if counter < 5:
+      total.append({rest+str(star): result[rest]})
+    counter += 1
+  return make_response({"res": total})
 
 
 # Import + Register Blueprints
