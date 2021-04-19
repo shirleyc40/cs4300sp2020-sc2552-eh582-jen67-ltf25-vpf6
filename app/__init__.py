@@ -144,7 +144,11 @@ def process_query():
     # raise HTTPException(msg='Invalid URL params', response_code=400)
     print("hey")
   if 'price_range' in request.args:
-    price_range = int(request.args['price_range'])
+    price_range = request.args['price_range']
+    if price_range == 'any':
+      price_range = float('inf')
+    else:
+      price_range = int(request.args['price_range'])
   else:
     price_range = float('inf')
 
