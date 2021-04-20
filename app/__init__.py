@@ -110,12 +110,17 @@ class MenuItemsSchema(ModelSchema):
 #   restaurant.id = name
 #   result = restaurant_schema.dump(restaurant.create())
 
-# with open('app/items.json') as f:
-#   data = json.load(f)
-# for item in data:
-#   items_schema = MenuItemsSchema()
-#   item = items_schema.load(item)
-#   result = items_schema.dump(item.create())
+# Populating
+@app.route('/populate', methods=['GET'])
+def pop():
+  with open('app/items.json') as f:
+    data = json.load(f)
+    print(len(data))
+  for item in data:
+    items_schema = MenuItemsSchema()
+    item = items_schema.load(item)
+    result = items_schema.dump(item.create())
+  return make_response({})
 
 
 # Routes
@@ -167,9 +172,10 @@ def process_query():
       else:
         inverted_idx[word] = [(item['id'],float(re.findall("[^\$]*$", item['price'])[0]), value)]
 
+
   result = {}
-  # print(inverted_indx)
   for q_tok in query_toks:
+    print(q_tok)
     M = boolean_search(food_type, q_tok, inverted_idx, price_range)
 
   for item_id in M:
