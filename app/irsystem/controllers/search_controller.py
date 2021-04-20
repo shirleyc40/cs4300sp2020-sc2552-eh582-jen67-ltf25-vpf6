@@ -27,7 +27,9 @@ def search():
 		return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data)
 
 	else:
-		output_message = "Dietary Restrictions: " + dietary + ', Kind of Food: ' + typeOfFood + ", Under $" + price
+		output_message = "Dietary Restrictions: " + dietary + ', Kind of Food: ' + typeOfFood 
+		if price != 'any':
+			output_message += ", Under $" + price
 		# time.sleep(5)
 		data = requests.get(url, params).json()
 		# print(data)

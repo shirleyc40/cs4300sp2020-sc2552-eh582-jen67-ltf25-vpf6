@@ -8,13 +8,14 @@
 padding: 20px 0;
 text-align:center;
 }
-body {
+/* body {
 padding-top: 15%;
 padding-bottom: 15px;
-}
+} */
 .global-search {
-text-align:center;
-padding:10px;
+    margin-top: 30vh;
+    text-align:center;
+    padding:10px;
 }
 
 .global-search * {
@@ -59,13 +60,23 @@ border: none
 .step-links a{
 color: #4285F4;
 } */
-
+.top-banner {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+.goback, .goback:hover {
+    color: white;
+    text-decoration: none;
+}
 .result {
     margin-left: 10px;
     margin-right: 10px;
 }
 .query {
-    margin: 20px 10px 0px 10px;
+    margin: 0px 10px 0px 10px;
+    width:fit-content
 }
 .results-label {
     margin: 20px 10px 0px 10px;
@@ -84,4 +95,9 @@ color: #4285F4;
 }
 .fa-star {
     color: gold
+}
+.no-res {
+    position: fixed; /* or absolute */
+    top: 50%;
+    left: 40%;
 }
