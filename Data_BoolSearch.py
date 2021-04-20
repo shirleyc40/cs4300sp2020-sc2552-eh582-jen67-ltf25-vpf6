@@ -193,14 +193,14 @@ def boolean_search(query_word,excluded_word, inverted_index, price_range, prices
             A_pnt += 1
             B_pnt += 1
         else:
-            if A[A_pnt] < B[B_pnt] and prices[int(A[A_pnt])] < price_range:
+            if A[A_pnt] < B[B_pnt] and prices[int(A[A_pnt])] < price_range and A[A_pnt] not in B:
                 M.append(A[A_pnt])
                 A_pnt += 1
             else:
                 B_pnt += 1
     
     while A_pnt < A_end:
-        if prices[int(A[A_pnt])] < price_range:
+        if prices[int(A[A_pnt])] < price_range and A[A_pnt] not in B:
             M.append(A[A_pnt])
         A_pnt += 1
     return M
