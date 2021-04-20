@@ -180,7 +180,6 @@ def boolean_search(query_word,excluded_word, inverted_index, price_range, prices
     try:
         A = [doc_count[0] for doc_count in inverted_index[query_word.lower()]] #query
         B = [doc_count[0] for doc_count in inverted_index[excluded_word.lower()]] #excluded
-
     except:
         return M
     
@@ -193,14 +192,15 @@ def boolean_search(query_word,excluded_word, inverted_index, price_range, prices
             A_pnt += 1
             B_pnt += 1
         else:
-            if A[A_pnt] < B[B_pnt] and prices[int(A[A_pnt])] < price_range and A[A_pnt] not in B:
-                M.append(A[A_pnt])
+            if A[A_pnt] < B[B_pnt]:
+                if prices[int(A[A_pnt])] < price_range:
+                    M.append(A[A_pnt])
                 A_pnt += 1
             else:
                 B_pnt += 1
     
     while A_pnt < A_end:
-        if prices[int(A[A_pnt])] < price_range and A[A_pnt] not in B:
+        if prices[int(A[A_pnt])] < price_range:
             M.append(A[A_pnt])
         A_pnt += 1
     return M

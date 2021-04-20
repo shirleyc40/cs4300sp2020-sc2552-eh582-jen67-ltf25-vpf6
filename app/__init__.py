@@ -165,10 +165,14 @@ def process_query():
 
   inverted_idx = dict()
 
+  temp = dict()
+  for item in items:
+    temp[item['id']] = item
+
   prices = [0]*(len(items)+1)
   
-  for item in items:
-    id = int(item['id'])
+  for i in range(1,len(items)+1):
+    item = temp[i]
     toks = tokenize(item['description'])
     counts = Counter(toks)
     for word, value in counts.items():
@@ -178,7 +182,21 @@ def process_query():
       else:
         # inverted_idx[word] = [(item['id'],float(re.findall("[^\$]*$", item['price'])[0]), value)]
         inverted_idx[word] = [(item['id'], value)]
-      prices[id] = float(re.findall("[^\$]*$", item['price'])[0])
+      # print(float(re.findall("[^\$]*$", item['price'])[0]))
+      prices[i] = float(re.findall("[^\$]*$", item['price'])[0])
+
+  # for item in items:
+  #   id = int(item['id'])
+  #   toks = tokenize(item['description'])
+  #   counts = Counter(toks)
+  #   for word, value in counts.items():
+  #     if word in inverted_idx.keys():
+  #       # inverted_idx[word].append((item['id'],float(re.findall("[^\$]*$", item['price'])[0]),value))
+  #       inverted_idx[word].append((item['id'],value))
+  #     else:
+  #       # inverted_idx[word] = [(item['id'],float(re.findall("[^\$]*$", item['price'])[0]), value)]
+  #       inverted_idx[word] = [(item['id'], value)]
+  #     prices[id] = float(re.findall("[^\$]*$", item['price'])[0])
 
   result = {}
   for q_tok in query_toks:
