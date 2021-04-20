@@ -165,19 +165,24 @@ def process_query():
 
   inverted_idx = dict()
 
+  prices = [0]*(len(items)+1)
+  
   for item in items:
+    id = int(item['id'])
     toks = tokenize(item['description'])
     counts = Counter(toks)
     for word, value in counts.items():
       if word in inverted_idx.keys():
-        inverted_idx[word].append((item['id'],float(re.findall("[^\$]*$", item['price'])[0]),value))
+        # inverted_idx[word].append((item['id'],float(re.findall("[^\$]*$", item['price'])[0]),value))
+        inverted_idx[word].append((item['id'],value))
       else:
-        inverted_idx[word] = [(item['id'],float(re.findall("[^\$]*$", item['price'])[0]), value)]
-
+        # inverted_idx[word] = [(item['id'],float(re.findall("[^\$]*$", item['price'])[0]), value)]
+        inverted_idx[word] = [(item['id'], value)]
+      prices[id] = float(re.findall("[^\$]*$", item['price'])[0])
 
   result = {}
   for q_tok in query_toks:
-    M = boolean_search(food_type, q_tok, inverted_idx, price_range)
+    M = boolean_search(food_type, q_tok, inverted_idx, price_range, prices)
 
   if len(M) == 0:
     M = [float(x) for x in range(1, 2908)]
