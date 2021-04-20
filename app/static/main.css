@@ -66,7 +66,7 @@ color: #4285F4;
     justify-content: space-between;
     padding: 10px;
 }
-.goback {
+.goback, .goback:hover {
     color: white;
     text-decoration: none;
 }
