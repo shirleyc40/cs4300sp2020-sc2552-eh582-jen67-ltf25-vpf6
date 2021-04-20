@@ -177,10 +177,13 @@ def boolean_search(query_word,excluded_word, inverted_index, price_range):
     """
     # YOUR CODE HERE
     M = [] #merged list
-    A = [doc_count[0] for doc_count in inverted_index[query_word.lower()]] #query
-    B = [doc_count[0] for doc_count in inverted_index[excluded_word.lower()]] #excluded
+    try:
+        A = [doc_count[0] for doc_count in inverted_index[query_word.lower()]] #query
+        B = [doc_count[0] for doc_count in inverted_index[excluded_word.lower()]] #excluded
 
-    a = [doc_count[1] for doc_count in inverted_index[query_word.lower()]] #query
+        a = [doc_count[1] for doc_count in inverted_index[query_word.lower()]] #query
+    except:
+        return M
     
     A_pnt = 0
     B_pnt = 0

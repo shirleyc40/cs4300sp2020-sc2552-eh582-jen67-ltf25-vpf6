@@ -182,12 +182,15 @@ def process_query():
     print(q_tok)
     M = boolean_search(food_type, q_tok, inverted_idx, price_range)
 
+  if len(M) == 0:
+    M = [float(x) for x in range(1, 2908)]
+  print(M)
   for item_id in M:
     get_item = MenuItems.query.get(item_id)
     item_schema = MenuItemsSchema()
     # print(counter)
     items = item_schema.dump(get_item)
-
+    print(items)
     restaurant = items['restaurant']
     if restaurant in result:
       if len(result[restaurant])<5:
@@ -212,6 +215,7 @@ def process_query():
       total.append({rest+str(star): result[rest]})
     counter += 1
   return make_response({"res": total})
+
 
 
 # Import + Register Blueprints
