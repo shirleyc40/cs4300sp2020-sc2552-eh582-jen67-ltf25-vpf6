@@ -152,15 +152,15 @@ class ReviewSchema(ModelSchema):
 # Populating
 @app.route('/populate', methods=['GET'])
 def pop():
-  with open('app/result.json') as f:
-    data = json.load(f)
+  # with open('app/result.json') as f:
+  #   data = json.load(f)
 
-  for name in data:
-    restaurant_schema = RestaurantSchema()
-    print(data[name])
-    restaurant = restaurant_schema.load(data[name])
-    restaurant.id = name
-    result = restaurant_schema.dump(restaurant.create())
+  # for name in data:
+  #   restaurant_schema = RestaurantSchema()
+  #   print(data[name])
+  #   restaurant = restaurant_schema.load(data[name])
+  #   restaurant.id = name
+  #   result = restaurant_schema.dump(restaurant.create())
 
   with open('app/items.json') as f:
     data = json.load(f)
@@ -206,6 +206,7 @@ def process_query():
     food_type = request.args['food_type']
   if 'ingredients' in request.args:
     ingredients = request.args['ingredients']
+    print("ingredients: ", ingredients)
   else:
     # raise HTTPException(msg='Invalid URL params', response_code=400)
     print("hey")
@@ -218,9 +219,6 @@ def process_query():
   else:
     price_range = float('inf')
 
-  # print(ingredients)
-  query_toks = tokenize(ingredients)
-
   get_items = MenuItems.query.all()
   items_schema = MenuItemsSchema(many=True)
   items = items_schema.dump(get_items)
@@ -228,9 +226,12 @@ def process_query():
   inverted_idx = dict()
 
   temp = dict()
-  for item in items:
+  npitems = np.array([])
+  for i,item in enumerate(items):
     temp[item['id']] = item
+    npitems = np.append(npitems, item)
 
+  # print(npitems)
   prices = [0]*(len(items)+1)
   
   for i in range(1,len(items)+1):
@@ -239,35 +240,24 @@ def process_query():
     counts = Counter(toks)
     for word, value in counts.items():
       if word in inverted_idx.keys():
-        # inverted_idx[word].append((item['id'],float(re.findall("[^\$]*$", item['price'])[0]),value))
         inverted_idx[word].append((item['id'],value))
       else:
-        # inverted_idx[word] = [(item['id'],float(re.findall("[^\$]*$", item['price'])[0]), value)]
         inverted_idx[word] = [(item['id'], value)]
-      # print(float(re.findall("[^\$]*$", item['price'])[0]))
       prices[i] = float(re.findall("[^\$]*$", item['price'])[0])
 
-  # for item in items:
-  #   id = int(item['id'])
-  #   toks = tokenize(item['description'])
-  #   counts = Counter(toks)
-  #   for word, value in counts.items():
-  #     if word in inverted_idx.keys():
-  #       # inverted_idx[word].append((item['id'],float(re.findall("[^\$]*$", item['price'])[0]),value))
-  #       inverted_idx[word].append((item['id'],value))
-  #     else:
-  #       # inverted_idx[word] = [(item['id'],float(re.findall("[^\$]*$", item['price'])[0]), value)]
-  #       inverted_idx[word] = [(item['id'], value)]
-  #     prices[id] = float(re.findall("[^\$]*$", item['price'])[0])
-
   result = {}
-  for q_tok in query_toks:
-    M = boolean_search(food_type, q_tok, inverted_idx, price_range, prices)
+  query_toks = tokenize(ingredients)
+  food_toks = tokenize(food_type)
+
+  M = main(food_toks,query_toks,price_range,npitems, inverted_idx, prices)
+  # for q_tok in query_toks:
+  #   M = boolean_search(food_type, q_tok, inverted_idx, price_range, prices)
 
   if len(M) == 0:
     M = [float(x) for x in range(1, 2908)]
 
-  for item_id in M:
+  for item in M:
+    item_id = item['id']
     get_item = MenuItems.query.get(item_id)
     item_schema = MenuItemsSchema()
     # print(counter)

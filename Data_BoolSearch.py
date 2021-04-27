@@ -139,20 +139,26 @@ def build_inverted_index(msgs):
     Note that doc_id refers to the index of the document/message in msgs.
     """
     # YOUR CODE HERE
-    inverted_indx = dict()
+    inverted_idx = dict()
 
-    for doc_id,msg in enumerate(msgs):
-        descrip = msg['name'] + ' : ' + msg['description']
-        tokens = tokenize(descrip)
-        # counts = Counter(msg['toks'])
-        counts = Counter(tokens)
-        for word, value in counts.items():
-            if word in inverted_indx.keys():
-                inverted_indx[word].append((doc_id,value))
-            else:
-                inverted_indx[word] = [(doc_id,value)]
+    temp = dict()
 
-    return inverted_indx
+    # msgs here is the item dict 
+    for item in msgs:
+        temp[item['id']] = item
+
+    for i in range(1,2908):
+        if i in temp:
+            item = temp[i]
+            toks = tokenize(item['description'])
+            counts = Counter(toks)
+            for word, value in counts.items():
+                if word in inverted_idx.keys():
+                    inverted_idx[word].append((item['id'],value))
+                else:
+                    inverted_idx[word] = [(item['id'], value)]
+
+    return inverted_idx
 
 
 def boolean_search(query_word,excluded_word, inverted_index, price_range, prices):
@@ -199,14 +205,14 @@ def boolean_search(query_word,excluded_word, inverted_index, price_range, prices
         else:
             if A[A_pnt] < B[B_pnt]:
                 if prices[int(A[A_pnt])] < price_range:
-                    M.append(A[A_pnt])
+                    M.append(int(A[A_pnt]))
                 A_pnt += 1
             else:
                 B_pnt += 1
     
     while A_pnt < A_end:
         if prices[int(A[A_pnt])] < price_range:
-            M.append(A[A_pnt])
+            M.append(int(A[A_pnt]))
         A_pnt += 1
     return M
 
@@ -247,13 +253,22 @@ def new_inv_ind(doc_inds, documents, inv_ind_func):
         inverted_index[term] = [(d1, tf1), (d2, tf2), ...]
         
     """
-    
-    new_docs = documents[doc_inds]
+    temp = dict()
+
+    # msgs here is the item dict 
+    for item in documents:
+        # print(item)
+        temp[item['id']] = item
+
+    new_docs = np.array([])
+    for i in doc_inds:
+        new_docs = np.append(new_docs, temp[i])
+
     new_inv_ind = inv_ind_func(new_docs)
     return new_inv_ind
 
 
-def term_sort(want_query,not_query,inv_ind,tokenize_func):
+def term_sort(want_query,not_query,inv_ind):
     """ Create two sorted lists of terms from the query, by the number of docs that use the term
     
     Arguments
@@ -286,21 +301,23 @@ def term_sort(want_query,not_query,inv_ind,tokenize_func):
     
     wants = []
     for tok in want_query:
-        l = len(inv_ind[tok])
-        wants.append((tok,l))
+        if tok in inv_ind:
+            l = len(inv_ind[tok])
+            wants.append((tok,l))
     wants.sort(key = lambda x: x[1]) 
     
     nots = []
     for tok in not_query:
-        l = len(inv_ind[tok])
-        nots.append((tok,l))
+        if tok in inv_ind:
+            l = len(inv_ind[tok])
+            nots.append((tok,l))
     nots.sort(key = lambda x: x[1])
     
     return wants,nots
     
 
 
-def main(want_query,not_query,price_range,item_list):
+def main(want_query,not_query,price_range,item_list, inv_idx, prices):
     """
     BIG ASSUMPTION FOR RIGHT NOW: the wants and exclude lists are same length
     
@@ -309,19 +326,32 @@ def main(want_query,not_query,price_range,item_list):
             A list of documents that match the query terms
     """
     #get inverted index
-    inv_ind = build_inverted_index(item_list) 
+    # inv_ind = build_inverted_index(item_list) 
     
     #get sorted lists of query terms
-    want_words,not_want_words = term_sort(want_query,not_query,inv_ind,tokenize)
+    want_words,not_want_words = term_sort(want_query,not_query,inv_idx)
         
     #loop through boolean searches
     documents = item_list
     for i in range(len(want_words)):
-        doc_list = boolean_search(want_words[i][0],not_want_words[i][0],inv_ind,price_range)
-        documents = documents[doc_list] 
-        print(doc_list)
-        inv_ind = new_inv_ind(doc_list, item_list, build_inverted_index)
-        
+        for j in range(len(not_want_words)):
+            doc_list = boolean_search(want_words[i][0],not_want_words[j][0],inv_idx,price_range, prices)
+            print(doc_list)
+            # doc list is a list of item ids
+            temp = dict()
+
+            # msgs here is the item dict 
+            for item in documents:
+                # print(item)
+                temp[item['id']] = item
+            
+            documents = np.array([])
+            for x in doc_list:
+                if x in temp:
+                    documents = np.append(documents, temp[x])
+
+            inv_ind = new_inv_ind(doc_list, item_list, build_inverted_index)
+    print("hey: ", documents)   
     return documents
     
     
