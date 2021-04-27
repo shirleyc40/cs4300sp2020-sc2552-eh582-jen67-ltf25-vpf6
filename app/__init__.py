@@ -256,12 +256,12 @@ def process_query():
   if len(M) == 0:
     M = [float(x) for x in range(1, 2908)]
 
-  for item in M:
-    item_id = item['id']
-    get_item = MenuItems.query.get(item_id)
-    item_schema = MenuItemsSchema()
-    # print(counter)
-    items = item_schema.dump(get_item)
+  for items in M:
+    # item_id = item['id']
+    # get_item = MenuItems.query.get(item_id)
+    # item_schema = MenuItemsSchema()
+    # # print(counter)
+    # items = item_schema.dump(get_item)
     restaurant = items['restaurant']
     if restaurant in result:
       if len(result[restaurant])<5:
