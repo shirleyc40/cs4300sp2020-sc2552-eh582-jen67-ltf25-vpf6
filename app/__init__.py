@@ -130,7 +130,7 @@ class ReviewSchema(ModelSchema):
         sqla_session = db.session
 
     id = fields.Number()
-    stars = fields.String(required=True)
+    stars = fields.Number(required=True)
     restrictions = fields.String(required=True)
     foodtype = fields.String(required=True)
     restaurant = fields.String()
@@ -178,7 +178,10 @@ def test():
     get_restaurants = Restaurants.query.all()
     restuarant_schema = RestaurantSchema(many=True)
     restaurants = restuarant_schema.dump(get_restaurants)
-    return make_response(jsonify({"restaurants": restaurants})) # return all doctors with their reviews
+    res = []
+    for rest in restaurants:
+      res.append(rest['id'])
+    return make_response(jsonify({"restaurants": res})) # return all doctors with their reviews
 
 @app.route('/items', methods=['GET'])
 def test2():
@@ -186,6 +189,15 @@ def test2():
     items_schema = MenuItemsSchema(many=True)
     items = items_schema.dump(get_items)
     return make_response(jsonify({"items": items})) # return all doctors with their reviews
+
+@app.route('/review', methods=['POST'])
+def make_review():
+  data = request.get_json()
+  review_schema = ReviewSchema()
+  review = review_schema.load(data) # load data from request into doctor schema
+  result = review_schema.dump(review.create())
+  return make_response(jsonify({"review": result}), 200) # return new doctor and success code
+
 
 @app.route('/query', methods=['GET'])
 def process_query():
