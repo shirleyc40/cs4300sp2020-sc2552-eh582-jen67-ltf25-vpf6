@@ -254,7 +254,7 @@ def process_query():
   #   M = boolean_search(food_type, q_tok, inverted_idx, price_range, prices)
 
   if len(M) == 0:
-    M = [float(x) for x in range(1, 2908)]
+    M = items
 
   for items in M:
     # item_id = item['id']
