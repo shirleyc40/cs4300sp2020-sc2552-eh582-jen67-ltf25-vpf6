@@ -41,17 +41,20 @@
             <div class="text">
                 <label for="priceSelect" class="form-label">Price Range </label>
                 <select class="form-select" id="priceSelect" aria-label="Default select example" name="price">
-                    <option selected>Select your price preference</option>
+                    <option selected value="any">Any</option>
                     <option value="10">Less than $10</option>
                     <option value="20">Less than $20</option>
                     <option value="30">Less than $35</option>
-                    <option value="any">Any</option>
                 </select>
             </div>
 
 
             <button type="submit" class="btn btn-primary submit"> Submit </button>
 
+        </div>
+
+        <div id="reviews">
+            <button type="button" onclick="location.href='reviews'"> Leave a Review </button>
         </div>
 
     </form>
