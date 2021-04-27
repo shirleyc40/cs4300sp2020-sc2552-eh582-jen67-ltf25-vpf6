@@ -6,14 +6,14 @@ import re
 import json
 
 # #getting list of all restaurants in kaggle dataset
-# restaurants = []
+# restaurants = {}
 # with open('restaurants.csv', 'r', encoding="utf8") as f:
 #     reader_restaurants = csv.reader(f, delimiter = ',')
 #     for row in reader_restaurants:
 #         if re.findall("austin$",row[1]):
 #             if row[0] == 'BBQ at Frankie�s':
 #                 row[0] = "BBQ at Frankie's"
-#             restaurants.append(row[0])
+#             restaurants[row[0]] = row[1]
 
 # #getting list of all businesses in yelp dataset
 # yelp = []
@@ -36,8 +36,13 @@ import json
         
 #         result[name]['stars'] = rest['stars']
 #         result[name]['reviewcount'] = rest['review_count']
-#         result[name]['hours'] = rest['hours']
+#         result[name]['hours'] = json.dumps(rest['hours'])
 #         result[name]['categories'] = rest['categories']
+#         result[name]['link'] = restaurants[rest['name']]
+#         result[name]['address'] = rest['address'] + ", " + rest['city'] + ", " + rest['state'] + " " + rest['postal_code']
+
+# with open('result.json', 'w') as fp:
+#     json.dump(result, fp)
 
 
 # #function to tokenize description
@@ -91,7 +96,7 @@ def tokenize(text):
 #                 np.append(items2,item)
 
 
-# #creating json of items
+#creating json of items
 
 # with open('items.json', 'w') as fp:
 #     json.dump(items2, fp)

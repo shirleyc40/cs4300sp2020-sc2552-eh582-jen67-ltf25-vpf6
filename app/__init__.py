@@ -33,17 +33,21 @@ class Restaurants(db.Model):
   reviewcount = db.Column(db.Integer, nullable=False)
   hours = db.Column(db.String, nullable=False)
   categories = db.Column(db.String, nullable=False)
+  link = db.Column(db.String, nullable=False)
+  address = db.Column(db.String, nullable=False)
 
   def create(self):
     db.session.add(self)
     db.session.commit()
     return self
 
-  def __init__(self, stars, hours, reviewcount, categories):
+  def __init__(self, stars, hours, reviewcount, categories, link, address):
     self.stars = stars 
     self.hours = hours
     self.reviewcount = reviewcount
     self.categories = categories
+    self.link = link
+    self.address = address
 
   def __repr__(self):
     return '' % self.id
@@ -70,6 +74,28 @@ class MenuItems(db.Model):
   def __repr__(self):
     return '' % self.id
 
+class Reviews(db.Model):
+  __tablename__ = "reviews"
+  id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+  stars = db.Column(db.Float, nullable=False)
+  restrictions = db.Column(db.String, nullable=False)
+  foodtype = db.Column(db.String, nullable=False)
+  restaurant = db.Column(db.String, db.ForeignKey("restaurants.id"))
+
+  def create(self):
+    db.session.add(self)
+    db.session.commit()
+    return self
+
+  def __init__(self, stars, restrictions, foodtype, restaurant):
+    self.stars = stars
+    self.restrictions = restrictions
+    self.foodtype = foodtype
+    self.restaurant = restaurant
+
+  def __repr__(self):
+    return '' % self.id
+
 db.create_all()
 
 # Schemas
@@ -83,6 +109,8 @@ class RestaurantSchema(ModelSchema):
     reviewcount = fields.Number(required=True)
     hours = fields.String(required=True)
     categories = fields.String(required=True)
+    link = fields.String(required=True)
+    address = fields.String(required=True)
 
 
 class MenuItemsSchema(ModelSchema):
@@ -94,6 +122,17 @@ class MenuItemsSchema(ModelSchema):
     name = fields.String(required=True)
     price = fields.String(required=True)
     description = fields.String(required=True)
+    restaurant = fields.String()
+
+class ReviewSchema(ModelSchema):
+    class Meta:
+        model = Reviews
+        sqla_session = db.session
+
+    id = fields.Number()
+    stars = fields.String(required=True)
+    restrictions = fields.String(required=True)
+    foodtype = fields.String(required=True)
     restaurant = fields.String()
 
 # Populating Database
@@ -113,12 +152,23 @@ class MenuItemsSchema(ModelSchema):
 # Populating
 @app.route('/populate', methods=['GET'])
 def pop():
+  with open('app/result.json') as f:
+    data = json.load(f)
+
+  for name in data:
+    restaurant_schema = RestaurantSchema()
+    print(data[name])
+    restaurant = restaurant_schema.load(data[name])
+    restaurant.id = name
+    result = restaurant_schema.dump(restaurant.create())
+
   with open('app/items.json') as f:
     data = json.load(f)
   for item in data:
     items_schema = MenuItemsSchema()
     item = items_schema.load(item)
     result = items_schema.dump(item.create())
+
   return make_response({})
 
 
