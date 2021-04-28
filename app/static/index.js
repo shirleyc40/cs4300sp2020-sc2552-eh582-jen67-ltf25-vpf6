@@ -1,10 +1,131 @@
 
-$(document).ready(() => {
-
+$(document).ready(function () {
     const item_name = $('.item-name')
-    $('.item-des').each(function(index) {
+    $('.item-des').each(function (index) {
         let name = item_name[index].innerHTML.toLowerCase()
         var text = $(this).text().replace(`${name} :`, '');
         $(this).text(text);
     })
 })
+
+function submit() {
+    var xhttp2 = new XMLHttpRequest();
+    xhttp2.open("POST", "http://localhost:5000/review", true);
+    var restaurant = document.getElementById("restaurantsInput").value;
+    var restrictions = document.getElementById("restrictionsInput").value;
+    var foodType = document.getElementById("foodTypeInput").value;
+    var stars = document.getElementById("starsInput").value;
+    xhttp2.send('{"stars":"' + stars + '", "restrictions":"' + restrictions + '", "restaurant":"' + restaurant + '", "foodtype":' + foodType + '}');
+}
+
+function autocomplete(inp, arr) {
+    const matchList = document.getElementById('rest-match');
+    /*execute a function when someone writes in the text field:*/
+    inp.addEventListener("input", function (e) {
+        var val = this.value
+        currentFocus = -1;
+        let matches = arr.filter(r => {
+            const regex = new RegExp(`^${val}`, 'gi');
+            return r.match(regex)
+        })
+        if (val.length === 0) {
+            matches = []
+            matchList.innerHTML = '';
+        }
+        if (matches.length > 0) {
+            const html = matches.map(m => `
+                <div class = "match" >
+                    ${m}
+                </div>
+            `).join('');
+            matchList.innerHTML = html;
+            let b = document.getElementsByClassName("match")
+            for (var i = 0; i < b.length; i++) {
+                b[i].addEventListener('click', function (e) {
+                    /*insert the value for the autocomplete text field:*/
+                    inp.value = $(this)[0].innerText;
+                    /*close the list of autocompleted values,
+                    (or any other open lists of autocompleted values:*/
+                    matchList.innerHTML = '';
+                });
+            }
+        }
+    });
+    /*execute a function presses a key on the keyboard:*/
+    inp.addEventListener("keydown", function (e) {
+        var x = document.getElementsByClassName("match");
+        if (e.keyCode == 40) {
+            /*If the arrow DOWN key is pressed,
+            increase the currentFocus variable:*/
+            currentFocus++;
+            /*and and make the current item more visible:*/
+            addActive(x);
+        } else if (e.keyCode == 38) { //up
+            /*If the arrow UP key is pressed,
+            decrease the currentFocus variable:*/
+            currentFocus--;
+            /*and and make the current item more visible:*/
+            addActive(x);
+        } else if (e.keyCode == 13) {
+            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+            e.preventDefault();
+            if (currentFocus > -1) {
+                /*and simulate a click on the "active" item:*/
+                if (x) x[currentFocus].click();
+            }
+        }
+    });
+    function addActive(x) {
+        /*a function to classify an item as "active":*/
+        if (!x) return false;
+        /*start by removing the "active" class on all items:*/
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        /*add class "autocomplete-active":*/
+        x[currentFocus].classList.add("active");
+    }
+    function removeActive(x) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (var i = 0; i < x.length; i++) {
+            x[i].classList.remove("active");
+        }
+    }
+    /*execute a function when someone clicks in the document:*/
+    document.addEventListener("click", function (e) {
+        matchList.innerHTML = '';
+    });
+
+
+    //     inp.addEventListener("keydown", function (e) {
+    //         console.log(this)
+    //         var x = document.getElementById(this.id + "autocomplete-list");
+    //         if (x) x = x.getElementsByTagName("div");
+    //         if (e.keyCode == 40) {
+    //             /*If the arrow DOWN key is pressed,
+    //             increase the currentFocus variable:*/
+    //             currentFocus++;
+    //             /*and and make the current item more visible:*/
+    //             addActive(x);
+    //         } else if (e.keyCode == 38) { //up
+    //             /*If the arrow UP key is pressed,
+    //             decrease the currentFocus variable:*/
+    //             currentFocus--;
+    //             /*and and make the current item more visible:*/
+    //             addActive(x);
+    //         } else if (e.keyCode == 13) {
+    //             /*If the ENTER key is pressed, prevent the form from being submitted,*/
+    //             e.preventDefault();
+    //             if (currentFocus > -1) {
+    //                 /*and simulate a click on the "active" item:*/
+    //                 if (x) x[currentFocus].click();
+    //             }
+    //         }
+    //     });
+
+
+
+    // })
+}
+
+
