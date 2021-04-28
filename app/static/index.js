@@ -24,6 +24,7 @@ function submitReview() {
     xhttp2.send('{"stars":' + star + ', "restrictions":"' + restrictions + '", "restaurant":"' + restaurant + '", "foodtype":"' + foodType + '"}');
 }
 
+// Basic autocomplete taken from https://www.w3schools.com/howto/howto_js_autocomplete.asp
 function autocomplete(inp, arr) {
     const matchList = document.getElementById('rest-match');
     /*execute a function when someone writes in the text field:*/
