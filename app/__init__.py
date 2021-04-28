@@ -249,19 +249,45 @@ def process_query():
   query_toks = tokenize(ingredients)
   food_toks = tokenize(food_type)
 
+  veg = ['beef', 'pork', 'lamb', 'veal', 'chicken', 'duck', 'turkey', 'goose', 'sausage', 'pepperoni', 'ham', 'bacon', 'meatballs', 'prosciutto', 'fish']
+  fish = ['salmon', 'tuna', 'tilapia']
+  shellfish = ['crab', 'clams', 'mussels', 'shrimp', 'anchovies', 'scallops', 'calamari', 'lobster', 'oysters', 'crayfish', 'octopus', 'squid']
+  cheese = ['mozzarella', 'parmesan', 'ricotta']
+  dairy = ['cheese', 'butter', 'milk', 'cream', 'ice cream', 'yogurt'] + cheese
+  gluten = ['bread', 'pasta', 'wheat', 'rye', 'spelt', 'barley', 'cereal', 'cookies', 'cake', 'crackers']
+  restrictions = {
+    'vegan': ['eggs', 'honey'] + veg + fish + shellfish + dairy,
+    'vegetarian': veg + fish + shellfish,
+    'shellfish': shellfish,
+    'tree nuts': ['almond', 'brazil nut', 'cashew', 'chestnut', 'filbert', 'hazelnut', 'hickory nut', 'macadamia nut', 'pecan', 'pistachio', 'walnut'],
+    'fish': fish,
+    'cheese': cheese
+  }
+  restrictions.update(dict.fromkeys(['dairy', 'dairy free', 'lactose intolerant'], dairy))
+  restrictions.update(dict.fromkeys(['gluten', 'gluten free'], gluten))
+
+  for restriction in query_toks:
+    if restriction in restrictions:
+      if restriction == 'shellfish' or restriction == 'tree nuts' or restriction == 'dairy' \
+      or restriction == 'gluten' or restriction == 'fish' or restriction == 'cheese':
+        query_toks += restrictions[restriction]
+      else:
+        query_toks.remove(restriction)
+        query_toks += restrictions[restriction]
+        food_toks.append(restriction)
+
   M = main(food_toks,query_toks,price_range,npitems, inverted_idx, prices)
   # for q_tok in query_toks:
   #   M = boolean_search(food_type, q_tok, inverted_idx, price_range, prices)
 
   if len(M) == 0:
-    M = [float(x) for x in range(1, 2908)]
+    M = [float(x) for x in range(1,2908)]
 
-  for items in M:
-    # item_id = item['id']
-    # get_item = MenuItems.query.get(item_id)
-    # item_schema = MenuItemsSchema()
-    # # print(counter)
-    # items = item_schema.dump(get_item)
+  for item in M:
+    get_item = MenuItems.query.get(item)
+    item_schema = MenuItemsSchema()
+    # print(counter)
+    items = item_schema.dump(get_item)
     restaurant = items['restaurant']
     if restaurant in result:
       if len(result[restaurant])<5:
