@@ -148,7 +148,7 @@ def build_inverted_index(msgs):
     for item in msgs:
         temp[item['id']] = item
 
-    for i in range(1,2908):
+    for i in range(1,9046):
         if i in temp:
             item = temp[i]
             toks = tokenize(item['description'])

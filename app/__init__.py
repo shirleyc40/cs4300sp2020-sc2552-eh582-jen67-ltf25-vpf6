@@ -35,19 +35,21 @@ class Restaurants(db.Model):
   categories = db.Column(db.String, nullable=False)
   link = db.Column(db.String, nullable=False)
   address = db.Column(db.String, nullable=False)
+  city = db.Column(db.String, nullable=False)
 
   def create(self):
     db.session.add(self)
     db.session.commit()
     return self
 
-  def __init__(self, stars, hours, reviewcount, categories, link, address):
+  def __init__(self, stars, hours, reviewcount, categories, link, address, city):
     self.stars = stars 
     self.hours = hours
     self.reviewcount = reviewcount
     self.categories = categories
     self.link = link
     self.address = address
+    self.city = city
 
   def __repr__(self):
     return '' % self.id
@@ -111,6 +113,7 @@ class RestaurantSchema(ModelSchema):
     categories = fields.String(required=True)
     link = fields.String(required=True)
     address = fields.String(required=True)
+    city = fields.String(required=True)
 
 
 class MenuItemsSchema(ModelSchema):
@@ -152,15 +155,15 @@ class ReviewSchema(ModelSchema):
 # Populating
 @app.route('/populate', methods=['GET'])
 def pop():
-  # with open('app/result.json') as f:
-  #   data = json.load(f)
+  with open('app/result.json') as f:
+    data = json.load(f)
 
-  # for name in data:
-  #   restaurant_schema = RestaurantSchema()
-  #   print(data[name])
-  #   restaurant = restaurant_schema.load(data[name])
-  #   restaurant.id = name
-  #   result = restaurant_schema.dump(restaurant.create())
+  for name in data:
+    restaurant_schema = RestaurantSchema()
+    print(data[name])
+    restaurant = restaurant_schema.load(data[name])
+    restaurant.id = name
+    result = restaurant_schema.dump(restaurant.create())
 
   with open('app/items.json') as f:
     data = json.load(f)
@@ -218,11 +221,23 @@ def process_query():
       price_range = int(request.args['price_range'])
   else:
     price_range = float('inf')
+  if 'city' in request.args:
+    city = request.args['city']
 
   get_items = MenuItems.query.all()
   items_schema = MenuItemsSchema(many=True)
-  items = items_schema.dump(get_items)
+  # items = items_schema.dump(get_items)
+  blob = items_schema.dump(get_items)
 
+  items = []
+  for item in blob:
+    rest = item['restaurant'].lower()
+    get_rest = Restaurants.query.get(rest)
+    rest_schema = RestaurantSchema()
+    restaurant = rest_schema.dump(get_rest)
+    if restaurant['city'].lower() == city:
+      items.append(item)
+      
   inverted_idx = dict()
 
   temp = dict()
@@ -232,18 +247,19 @@ def process_query():
     npitems = np.append(npitems, item)
 
   # print(npitems)
-  prices = [0]*(len(items)+1)
+  prices = [0]*(len(blob)+1)
   
-  for i in range(1,len(items)+1):
-    item = temp[i]
-    toks = tokenize(item['description'])
-    counts = Counter(toks)
-    for word, value in counts.items():
-      if word in inverted_idx.keys():
-        inverted_idx[word].append((item['id'],value))
-      else:
-        inverted_idx[word] = [(item['id'], value)]
-      prices[i] = float(re.findall("[^\$]*$", item['price'])[0])
+  for i in range(1,len(blob)+1):
+    if i in temp:
+      item = temp[i]
+      toks = tokenize(item['description'])
+      counts = Counter(toks)
+      for word, value in counts.items():
+        if word in inverted_idx.keys():
+          inverted_idx[word].append((item['id'],value))
+        else:
+          inverted_idx[word] = [(item['id'], value)]
+        prices[i] = float(re.findall("[^\$]*$", item['price'])[0])
 
   result = {}
   query_toks = tokenize(ingredients)
@@ -281,7 +297,7 @@ def process_query():
   #   M = boolean_search(food_type, q_tok, inverted_idx, price_range, prices)
 
   if len(M) == 0:
-    M = [float(x) for x in range(1,2908)]
+    M = [float(x) for x in range(1,len(blob)+1)]
 
   for item in M:
     get_item = MenuItems.query.get(item)

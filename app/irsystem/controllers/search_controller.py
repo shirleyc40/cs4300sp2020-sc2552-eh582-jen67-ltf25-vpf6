@@ -21,6 +21,9 @@ def search():
 	price = request.args.get('price')
 	params['price_range'] = price
 
+	city = request.args.get('location')
+	params['city'] = city
+
 	if not dietary:
 		data = []
 		output_message = ''
