@@ -339,13 +339,14 @@ def main(want_query,not_query,price_range,item_list, inv_idx, prices):
     if len(want_words) == 0:
         res = []
         for doc in documents:
-            res.append(doc['id'])
+            if prices[int(doc['id'])] < price_range:
+                res.append(doc['id'])
         # res = [float(x) for x in range(1, 9046)]
         print(len(res))
         for i in range(len(not_want_words)):
             docs = inv_idx[not_want_words[i][0]]
             for docid,count in docs:
-                if docid in res and prices[int(docid)] < price_range:
+                if docid in res:
                     res.remove(docid)
 
     else: 
