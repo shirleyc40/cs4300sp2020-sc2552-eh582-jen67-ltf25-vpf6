@@ -335,36 +335,43 @@ def main(want_query,not_query,price_range,item_list, inv_idx, prices):
     #loop through boolean searches
     res = []
     documents = item_list
-    for i in range(len(want_words)):
-        for j in range(len(not_want_words)):
-            doc_list = boolean_search(want_words[i][0],not_want_words[j][0],inv_idx,price_range, prices)
-            # print(doc_list)
-            # doc list is a list of item ids
-            temp = dict()
+    if len(want_words) == 0:
+        res = [float(x) for x in range(1, len(documents)+1)]
+        for i in range(len(not_want_words)):
+            docs = inv_idx[not_want_words[i][0]]
+            for docid,count in docs:
+                if docid in res:
+                    res.remove(docid)
 
-            # msgs here is the item dict 
-            for item in documents:
-                # print(item)
-                temp[item['id']] = item
+    else: 
+        for i in range(len(want_words)):
+            for j in range(len(not_want_words)):
+                doc_list = boolean_search(want_words[i][0],not_want_words[j][0],inv_idx,price_range, prices)
+                # print(doc_list)
+                # doc list is a list of item ids
+                temp = dict()
+
+                # msgs here is the item dict 
+                for item in documents:
+                    # print(item)
+                    temp[item['id']] = item
+                
+                documents = np.array([])
+                for x in doc_list:
+                    if x in temp:
+                        documents = np.append(documents, temp[x])
+
+                inv_ind = new_inv_ind(doc_list, item_list, build_inverted_index)
             
-            documents = np.array([])
-            for x in doc_list:
-                if x in temp:
-                    documents = np.append(documents, temp[x])
-
-            inv_ind = new_inv_ind(doc_list, item_list, build_inverted_index)
-        
-        t = []
-        for doc in documents:
-            t.append(doc['id'])
-            if doc['id'] not in res:
-                res.append(doc['id'])
-        print("t for i: ", t)
-        inv_ind = inv_idx
-        documents = item_list
+            t = []
+            for doc in documents:
+                t.append(doc['id'])
+                if doc['id'] not in res:
+                    res.append(doc['id'])
+            inv_ind = inv_idx
+            documents = item_list
 
     res = sorted(res)
-    print("res: ", res)
     return res
     
     
