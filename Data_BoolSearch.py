@@ -332,6 +332,7 @@ def main(want_query,not_query,price_range,item_list, inv_idx, prices):
     want_words,not_want_words = term_sort(want_query,not_query,inv_idx)
         
     #loop through boolean searches
+    res = []
     documents = item_list
     for i in range(len(want_words)):
         for j in range(len(not_want_words)):
@@ -351,8 +352,19 @@ def main(want_query,not_query,price_range,item_list, inv_idx, prices):
                     documents = np.append(documents, temp[x])
 
             inv_ind = new_inv_ind(doc_list, item_list, build_inverted_index)
-    # print("hey: ", documents)   
-    return documents
+        
+        t = []
+        for doc in documents:
+            t.append(doc['id'])
+            if doc['id'] not in res:
+                res.append(doc['id'])
+        print("t for i: ", t)
+        inv_ind = inv_idx
+        documents = item_list
+
+    res = sorted(res)
+    print("res: ", res)
+    return res
     
     
 

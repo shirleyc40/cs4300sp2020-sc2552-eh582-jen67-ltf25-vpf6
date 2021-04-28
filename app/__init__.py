@@ -281,14 +281,13 @@ def process_query():
   #   M = boolean_search(food_type, q_tok, inverted_idx, price_range, prices)
 
   if len(M) == 0:
-    M = items
+    M = [float(x) for x in range(1,2908)]
 
-  for items in M:
-    # item_id = item['id']
-    # get_item = MenuItems.query.get(item_id)
-    # item_schema = MenuItemsSchema()
-    # # print(counter)
-    # items = item_schema.dump(get_item)
+  for item in M:
+    get_item = MenuItems.query.get(item)
+    item_schema = MenuItemsSchema()
+    # print(counter)
+    items = item_schema.dump(get_item)
     restaurant = items['restaurant']
     if restaurant in result:
       if len(result[restaurant])<5:
