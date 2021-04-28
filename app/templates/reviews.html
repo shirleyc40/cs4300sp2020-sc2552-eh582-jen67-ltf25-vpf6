@@ -16,7 +16,7 @@
 <h3>Thanks for leaving a review!</h3>
 <div class="reviews">
 
-    <form class="revform" autocomplete="off">
+    <form class="revform" autocomplete="off" method="post">
         <div class="autocomplete">
             <div class="in-group">
                 <label for="restaurantsInput" class="form-label lab">Restaurant Name: </label>
@@ -52,7 +52,7 @@
                 </div>
             </div>
 
-            <input type="submit" class="button" onclick="submit();" value="Submit" />
+            <input type="submit" class="button" value="Submit" onclick="submitReview();"/>
     </form>
     </div>
     {% endblock %}

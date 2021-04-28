@@ -8,14 +8,20 @@ $(document).ready(function () {
     })
 })
 
-function submit() {
+function submitReview() {
     var xhttp2 = new XMLHttpRequest();
     xhttp2.open("POST", "http://localhost:5000/review", true);
+    xhttp2.setRequestHeader('Content-Type', 'application/json');
     var restaurant = document.getElementById("restaurantsInput").value;
     var restrictions = document.getElementById("restrictionsInput").value;
     var foodType = document.getElementById("foodTypeInput").value;
-    var stars = document.getElementById("starsInput").value;
-    xhttp2.send('{"stars":"' + stars + '", "restrictions":"' + restrictions + '", "restaurant":"' + restaurant + '", "foodtype":' + foodType + '}');
+    // var stars = parseFloat(document.getElementById("starsInput").value);
+    var stars = document.getElementsByName('stars');   
+        for(i = 0; i < stars.length; i++) {
+            if(stars[i].checked)
+            var star = parseFloat(stars[i].value);
+        }
+    xhttp2.send('{"stars":' + star + ', "restrictions":"' + restrictions + '", "restaurant":"' + restaurant + '", "foodtype":"' + foodType + '"}');
 }
 
 function autocomplete(inp, arr) {
