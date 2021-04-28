@@ -10,7 +10,7 @@ import json
 # with open('restaurants.csv', 'r', encoding="utf8") as f:
 #     reader_restaurants = csv.reader(f, delimiter = ',')
 #     for row in reader_restaurants:
-#         if re.findall("austin$",row[1]):
+#         if re.findall("austin$|atlanta$",row[1]):
 #             if row[0] == 'BBQ at Frankie�s':
 #                 row[0] = "BBQ at Frankie's"
 #             restaurants[row[0]] = row[1]
@@ -30,7 +30,7 @@ import json
 # result = dict()
 
 # for rest in yelp:
-#     if rest['name'] in restaurants and rest['city'] == 'Austin':
+#     if rest['name'] in restaurants and (rest['city'] == 'Austin' or rest['city'] == 'Atlanta'):
 #         name = rest['name'].lower()
 #         result[name] = dict()
         
@@ -40,6 +40,7 @@ import json
 #         result[name]['categories'] = rest['categories']
 #         result[name]['link'] = restaurants[rest['name']]
 #         result[name]['address'] = rest['address'] + ", " + rest['city'] + ", " + rest['state'] + " " + rest['postal_code']
+#         result[name]['city'] = rest['city']
 
 # with open('result.json', 'w') as fp:
 #     json.dump(result, fp)
