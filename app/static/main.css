@@ -44,7 +44,7 @@ a:hover {
     height: 100%;
     width: 100%;
     padding: 30px;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/static/image-background.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("https://i.imgur.com/xCfNBOW.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
