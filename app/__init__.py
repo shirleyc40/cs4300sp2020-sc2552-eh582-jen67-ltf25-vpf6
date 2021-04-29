@@ -314,10 +314,11 @@ def process_query():
       items = item_schema.dump(get_item)
       restaurant = items['restaurant']
       if restaurant in result:
-        if len(result[restaurant])<5:
-          result[restaurant].append(items)
+        if len(result[restaurant]['items'])<5:
+          result[restaurant]['items'].append(items)
       else:
-        result[restaurant] = [items]
+        result[restaurant] = {}
+        result[restaurant]['items'] = [items]
 
     sorted_restaurants = [] 
     for rest in result:
@@ -325,15 +326,19 @@ def process_query():
       rest_schema = RestaurantSchema()
       restaurant = rest_schema.dump(get_rest)
       stars, review_count = restaurant['stars'], restaurant['reviewcount']
-      sorted_restaurants.append((rest, stars, review_count))
+      addr, link = restaurant['address'], restaurant['link']
+      sorted_restaurants.append((rest, stars, review_count, addr, link))
 
     p = sorted(sorted_restaurants, key=lambda x: (-x[1], -x[2]))
 
     counter = 0
     total = []
-    for rest, star, count in p:
+    for rest, star, count, addr, link in p:
       if counter < 5:
-        total.append({rest+str(star): result[rest]})
+        result[rest]['address'] = addr
+        result[rest]['link'] = link
+        result[rest]['stars'] = star
+        total.append({rest: result[rest]})
       counter += 1
     return make_response({"res": total})
 
