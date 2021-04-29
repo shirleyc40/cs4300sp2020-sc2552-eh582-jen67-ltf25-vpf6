@@ -12,17 +12,14 @@
 padding: 20px 0;
 text-align:center;
 }
-
-.global-search {
-    margin-top: 30vh;
-    text-align:center;
-    padding:10px;
-}
-
 .global-search * {
 display:inline-block;
 }
 } */
+
+.global-search {
+    margin-bottom: 0px
+}
 
 body {
     font-family: 'Kameron';
@@ -38,11 +35,16 @@ a:hover {
     color: inherit
 }
 
+*:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 .bg {
     height: 100%;
     width: 100%;
     padding: 30px;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("./image-background.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/static/image-background.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -90,7 +92,7 @@ a:hover {
     vertical-align: baseline;
     height: fit-content;
     width: fit-content;
-    margin-top: 30px;
+    margin-top: 40px;
     background-color: #FFA733;
     border: none
 }
@@ -108,53 +110,23 @@ a:hover {
 .review-btn,
 .review-btn:hover {
     float: right;
-    color: white
+    color: white;
+    width: fit-content
 }
 
 
 /*results page */
 
-.top-banner {
-    margin-top: 20px;
+.res-container {
     display: flex;
-    justify-content: space-between;
-    padding: 10px;
+    padding: 16px
 }
-
-.goback,
-.goback:hover {
-    color: white;
-    text-decoration: none;
-}
-
-.result {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
 .query {
-    margin: 0px 10px 0px 10px;
-    width: fit-content
+    flex: 0.4
 }
-
-.results-label {
-    margin: 20px 10px 0px 10px;
-    font-size: 20px;
-    font-weight: bold;
+.results {
+    flex: 1
 }
-
-.query>span {
-    font-weight: bold;
-}
-
-.rest-title {
-    font-size: 20px;
-}
-
-.rating {
-    margin-left: 20px
-}
-
 .fa-star {
     color: gold
 }
