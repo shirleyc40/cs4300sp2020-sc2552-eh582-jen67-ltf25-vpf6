@@ -328,6 +328,7 @@ def main(want_query,not_query,price_range,item_list, inv_idx, prices):
     """
     #get inverted index
     # inv_ind = build_inverted_index(item_list) 
+    no_food_type = len(want_query) == 0
     
     #get sorted lists of query terms
     want_words,not_want_words = term_sort(want_query,not_query,inv_idx)
@@ -336,22 +337,36 @@ def main(want_query,not_query,price_range,item_list, inv_idx, prices):
     res = []
     documents = item_list
     print(len(documents))
-    if len(want_words) == 0:
+    restr_not_found = True
+    if len(not_want_words) == 0:
+        print("HI")
+        if no_food_type:
+            for doc in documents:
+                if prices[int(doc['id'])] < price_range:
+                    res.append(doc['id'])
+        for i in range(len(want_words)):
+            docs = inv_idx[want_words[i][0]]
+            for docid,count in docs:
+                if prices[int(docid)] < price_range:
+                    res.append(docid)
+
+    elif no_food_type:
         res = []
         for doc in documents:
-            if prices[int(doc['id'])] < price_range:
-                res.append(doc['id'])
+            res.append(doc['id'])
         # res = [float(x) for x in range(1, 9046)]
         print(len(res))
         for i in range(len(not_want_words)):
             docs = inv_idx[not_want_words[i][0]]
             for docid,count in docs:
-                if docid in res:
+                if docid in res and prices[int(docid)] < price_range:
                     res.remove(docid)
 
     else: 
         for i in range(len(want_words)):
             for j in range(len(not_want_words)):
+                if not_want_words[j][0].lower() in inv_idx:
+                    restr_not_found = False
                 doc_list = boolean_search(want_words[i][0],not_want_words[j][0],inv_idx,price_range, prices)
                 # print(doc_list)
                 # doc list is a list of item ids
@@ -378,7 +393,9 @@ def main(want_query,not_query,price_range,item_list, inv_idx, prices):
             documents = item_list
 
     res = sorted(res)
-    return res
+    if restr_not_found:
+        return (res, "no_err")
+    return (res, "")
     
     
 

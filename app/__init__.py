@@ -300,38 +300,42 @@ def process_query():
   # for q_tok in query_toks:
   #   M = boolean_search(food_type, q_tok, inverted_idx, price_range, prices)
 
-  if len(M) == 0:
-    M = [float(x) for x in range(1,len(blob)+1)]
+  # if len(M) == 0:
+  #   M = [float(x) for x in range(1,len(blob)+1)]
+  print("M: ", len(M[0]))
+  if (len(M[0]) == 2907 and city == 'austin' and not M[1] == "no_err") or (len(M[0]) == 6138 and city == 'atlanta' and not M[1] == "no_err"):
+    return make_response({"error": "No restaurants found"})
 
-  for item in M:
-    get_item = MenuItems.query.get(item)
-    item_schema = MenuItemsSchema()
-    # print(counter)
-    items = item_schema.dump(get_item)
-    restaurant = items['restaurant']
-    if restaurant in result:
-      if len(result[restaurant])<5:
-        result[restaurant].append(items)
-    else:
-      result[restaurant] = [items]
+  else:
+    for item in M[0]:
+      get_item = MenuItems.query.get(item)
+      item_schema = MenuItemsSchema()
+      # print(counter)
+      items = item_schema.dump(get_item)
+      restaurant = items['restaurant']
+      if restaurant in result:
+        if len(result[restaurant])<5:
+          result[restaurant].append(items)
+      else:
+        result[restaurant] = [items]
 
-  sorted_restaurants = [] 
-  for rest in result:
-    get_rest = Restaurants.query.get(rest)
-    rest_schema = RestaurantSchema()
-    restaurant = rest_schema.dump(get_rest)
-    stars, review_count = restaurant['stars'], restaurant['reviewcount']
-    sorted_restaurants.append((rest, stars, review_count))
+    sorted_restaurants = [] 
+    for rest in result:
+      get_rest = Restaurants.query.get(rest)
+      rest_schema = RestaurantSchema()
+      restaurant = rest_schema.dump(get_rest)
+      stars, review_count = restaurant['stars'], restaurant['reviewcount']
+      sorted_restaurants.append((rest, stars, review_count))
 
-  p = sorted(sorted_restaurants, key=lambda x: (-x[1], -x[2]))
+    p = sorted(sorted_restaurants, key=lambda x: (-x[1], -x[2]))
 
-  counter = 0
-  total = []
-  for rest, star, count in p:
-    if counter < 5:
-      total.append({rest+str(star): result[rest]})
-    counter += 1
-  return make_response({"res": total})
+    counter = 0
+    total = []
+    for rest, star, count in p:
+      if counter < 5:
+        total.append({rest+str(star): result[rest]})
+      counter += 1
+    return make_response({"res": total})
 
 
 
