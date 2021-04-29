@@ -32,12 +32,12 @@ def search():
 	else:
 		output_message = "Dietary Restrictions: " + dietary + ', Kind of Food: ' + typeOfFood 
 		if price != 'any':
-			output_message += ", Under $" + price
+			price = "Under $" + price
 		# time.sleep(5)
 		data = requests.get(url, params).json()
 		# print(data)
 
-		return render_template('results.html', output_message=output_message, data=data)
+		return render_template('results.html', dietary = dietary, craving = typeOfFood, price = price, data=data)
 
 @irsystem.route('/reviews', methods=['POST', 'GET'])
 def review():
