@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     $('.item-des').each(function (index) {
         let name = item_name[index].innerHTML.toLowerCase()
-        var text = $(this).text().replace(`${name} :`, '');
+        var text = $(this).text().replace(`${name} :`, '').replace(/[0-9]/g, '');
         $(this).text(text);
     });
     item_name.each(function () {
