@@ -1,14 +1,20 @@
 
 $(document).ready(function () {
     const item_name = $('.item-name')
+
     $('.item-des').each(function (index) {
         let name = item_name[index].innerHTML.toLowerCase()
         var text = $(this).text().replace(`${name} :`, '');
         $(this).text(text);
     });
+    item_name.each(function () {
+        replaced = $(this).text().replace(/[0-9]/g, '').trim()
+        replaced = replaced[0].toUpperCase() + replaced.slice(1)
+        $(this).text(replaced)
+    })
     $("div[data-rating]").each(function () {
         rating = $(this)[0].dataset.rating
-        const starPercentage = ((rating / 5)+0.005) * 100 + '%'
+        const starPercentage = ((rating / 5) + 0.005) * 100 + '%'
         $(this).width(starPercentage)
     });
 })
@@ -68,7 +74,7 @@ function autocomplete(inp, arr) {
                     matchList.style.height = "0px"
                 });
             }
-        } else {matchList.style.height = "0px"}
+        } else { matchList.style.height = "0px" }
     });
     /*execute a function presses a key on the keyboard:*/
     inp.addEventListener("keydown", function (e) {

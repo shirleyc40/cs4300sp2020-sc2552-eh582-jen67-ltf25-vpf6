@@ -141,7 +141,7 @@ a:hover {
 .res-container {
     min-height: 100%;
     display: flex;
-    padding: 16px;
+    padding: 30px;
     background-color: #DFEAF6;
     font-family: 'Open Sans';
 }
@@ -180,6 +180,10 @@ a:hover {
     padding-left: 5px;
     min-height: 26px;
 }
+.top {
+    display: flex;
+    justify-content: space-between;
+}
 .result {
     overflow: hidden;
     max-height: 350px;
@@ -188,11 +192,11 @@ a:hover {
 
 }
 .rest-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 0px;
     display: inline-block;
-    margin-right: 10%
+    margin-right: 5px
 }
 .rest-address {
     font-size:14px
@@ -228,7 +232,7 @@ a:hover {
     height: 7%;
 }
 .item-name {
-    font-size: 1.5rem;
+    font-size: 20px;
     font-weight: 700;
 }
 
@@ -248,7 +252,7 @@ a:hover {
 .fa-usd {
     position: absolute;
     top: 25px;
-    left: 32px;
+    left: 30px;
     font-size: 1.2rem
 }
 .fa-star {

@@ -1,28 +1,43 @@
 {% macro restaurantCard(d, value) %}
 <div class="shadow p-4 mb-6 rounded result">
-    <a href = "{{value.link}}"><p class='rest-title'>{{d.capitalize()}}</p></a>
-   
-    <div class="star-outer">
-        <i class="fa fa-star fa-lg" aria-hidden="true"></i>
-        <i class="fa fa-star fa-lg" aria-hidden="true"></i>
-        <i class="fa fa-star fa-lg" aria-hidden="true"></i>
-        <i class="fa fa-star fa-lg" aria-hidden="true"></i>
-        <i class="fa fa-star fa-lg" aria-hidden="true"></i>
-        <div class="star-inner" data-rating="{{value['stars']}}">
-            <i class="fa fa-star fa-lg" aria-hidden="true"></i>
-            <i class="fa fa-star fa-lg" aria-hidden="true"></i>
-            <i class="fa fa-star fa-lg" aria-hidden="true"></i>
-            <i class="fa fa-star fa-lg" aria-hidden="true"></i>
-            <i class="fa fa-star fa-lg" aria-hidden="true"></i>
+
+    <div class="top">
+        <div>
+            <a href="{{value.link}}">
+                <p class='rest-title'>{{d.capitalize()}}</p>
+            </a>
+            <div class="star-outer">
+                <i class="fa fa-star fa-lg" aria-hidden="true"></i>
+                <i class="fa fa-star fa-lg" aria-hidden="true"></i>
+                <i class="fa fa-star fa-lg" aria-hidden="true"></i>
+                <i class="fa fa-star fa-lg" aria-hidden="true"></i>
+                <i class="fa fa-star fa-lg" aria-hidden="true"></i>
+                <div class="star-inner" data-rating="{{value['stars']}}">
+                    <i class="fa fa-star fa-lg" aria-hidden="true"></i>
+                    <i class="fa fa-star fa-lg" aria-hidden="true"></i>
+                    <i class="fa fa-star fa-lg" aria-hidden="true"></i>
+                    <i class="fa fa-star fa-lg" aria-hidden="true"></i>
+                    <i class="fa fa-star fa-lg" aria-hidden="true"></i>
+                </div>
+            </div>
+            <span> {{value['stars']}}</span>
+            <p class="rest-address">{{value.address}}</p>
         </div>
-    </div> 
-    <span>  {{value['stars']}}</span>
-    <p class="rest-address">{{value.address}}</p>
+        {%if value['users']%}
+        <div>
+            {%for food, count in value['users'].items()%}
+            <p class="user-rating">"<span>{{count}}</span> user(s) said great for no {{food}}"</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+
     <div class="item-container">
         {%for item in value['items']%}
         <div class="row">
             <div class="col-10">
-                <p class="item-name">{{item.name.capitalize()}}</p>
+                <p class="item-name">{{item.name}}</p>
                 <p class="item-des">{{item.description}}</p>
             </div>
             <div class="col-2 price">
