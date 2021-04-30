@@ -4,6 +4,7 @@ import csv
 # import matplotlib.pyplot as plt
 import re
 import json
+# from gensim.models import KeyedVectors
 
 # #getting list of all restaurants in kaggle dataset
 # restaurants = {}
@@ -411,3 +412,111 @@ def main(want_query,not_query,price_range,item_list, inv_idx, prices):
 
 # r = main(qw,qn,100,items2)
 # print(r)
+
+def main_ML(want_query,not_query,price_range,item_list, inv_idx, prices):
+    """
+    BIG ASSUMPTION FOR RIGHT NOW: the wants and exclude lists are same length
+    
+    returns:
+        documents: list,
+            A list of documents that match the query terms
+    """
+    #get inverted index
+    # inv_ind = build_inverted_index(item_list) 
+    no_food_type = len(want_query) == 0
+    
+    #ML addition: using word embeddings
+    #using the gensim library and the pre-trained model:
+    #GoogleNews-vectors-negative300
+    model = KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin.gz', binary = True)
+    temp_w = []
+    temp_n = []
+    
+    for word in want_query:
+        embed = model.most_similar(word[0]) # get list of most similar words [(word, sim score)]
+        embed = [w[0] for w in words if w[1] >= 0.65] #only keep if sim score >= 0.65
+        temp_w += embed #add words to temp list
+    
+    for word in not_query:
+        embed = model.most_similar(word[0])
+        embed = [w[0] for w in words if w[1] >= 0.65]
+        temp_n += embed
+    
+    want_query += temp_w #add temp list tp original list
+    not_query += temp_n
+    
+    want_query = list(set(want_query)) #removing duplicates
+    not_query = list(set(not_query))
+    
+    #get sorted lists of query terms
+    want_words,not_want_words = term_sort(want_query,not_query,inv_idx)
+    
+    #loop through boolean searches
+    res = []
+    documents = item_list
+    # print(len(documents))
+    restr_not_found = True
+    if len(not_want_words) == 0:
+        # print("HI")
+        if no_food_type:
+            for doc in documents:
+                if prices[int(doc['id'])] < price_range:
+                    res.append(doc['id'])
+        elif len(want_words) == 0:
+            return (res, "err")
+        else:
+            for i in range(len(want_words)):
+                docs = inv_idx[want_words[i][0]]
+                for docid,count in docs:
+                    if prices[int(docid)] < price_range:
+                        res.append(docid)
+        res = sorted(res)
+        return (res, "no_restr")
+
+    elif no_food_type:
+        res = []
+        for doc in documents:
+            res.append(doc['id'])
+        # res = [float(x) for x in range(1, 9046)]
+        # print(len(res))
+        for i in range(len(not_want_words)):
+            docs = inv_idx[not_want_words[i][0]]
+            for docid,count in docs:
+                if docid in res and prices[int(docid)] < price_range:
+                    res.remove(docid)
+
+    else: 
+        for i in range(len(want_words)):
+            for j in range(len(not_want_words)):
+                print("here")
+                if not_want_words[j][0].lower() in inv_idx:
+                    restr_not_found = False
+                doc_list = boolean_search(want_words[i][0],not_want_words[j][0],inv_idx,price_range, prices)
+                # print(doc_list)
+                # doc list is a list of item ids
+                temp = dict()
+
+                # msgs here is the item dict 
+                for item in documents:
+                    # print(item)
+                    temp[item['id']] = item
+                
+                documents = np.array([])
+                for x in doc_list:
+                    if x in temp:
+                        documents = np.append(documents, temp[x])
+
+                inv_ind = new_inv_ind(doc_list, item_list, build_inverted_index)
+            
+            t = []
+            for doc in documents:
+                t.append(doc['id'])
+                if doc['id'] not in res:
+                    res.append(doc['id'])
+            inv_ind = inv_idx
+            documents = item_list
+
+    res = sorted(res)
+    if restr_not_found:
+        return (res, "no_err")
+    return (res, "")
