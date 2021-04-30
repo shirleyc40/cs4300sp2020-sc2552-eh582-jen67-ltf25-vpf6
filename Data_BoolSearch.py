@@ -412,6 +412,8 @@ def main(want_query,not_query,price_range,item_list, inv_idx, prices):
 # r = main(qw,qn,100,items2)
 # print(r)
 
+
+
 def main_ML(want_query,not_query,price_range,item_list, inv_idx, prices):
     """
     BIG ASSUMPTION FOR RIGHT NOW: the wants and exclude lists are same length
@@ -426,20 +428,22 @@ def main_ML(want_query,not_query,price_range,item_list, inv_idx, prices):
     
     #ML addition: using word embeddings
     #using the gensim library and the pre-trained model:
-    #GoogleNews-vectors-negative300
-    model = KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin.gz', binary = True)
+    #GoogleNews-vectors-negative300 only taking 300 words that are used in our items
+    model = KeyedVectors.load_word2vec_format('smaller_model')
     temp_w = []
     temp_n = []
     
     for word in want_query:
-        embed = model.most_similar(word[0]) # get list of most similar words [(word, sim score)]
-        embed = [w[0] for w in words if w[1] >= 0.65] #only keep if sim score >= 0.65
-        temp_w += embed #add words to temp list
+        if word in model.key_to_index:
+            embed = model.most_similar(word[0]) # get list of most similar words [(word, sim score)]
+            embed = [w[0] for w in embed if w[1] >= 0.5] #only keep if sim score >= 0.5
+            temp_w += embed #add words to temp list
     
     for word in not_query:
-        embed = model.most_similar(word[0])
-        embed = [w[0] for w in words if w[1] >= 0.65]
-        temp_n += embed
+        if word in model.key_to_index:
+            embed = model.most_similar(word[0])
+            embed = [w[0] for w in embed if w[1] >= 0.5]
+            temp_n += embed
     
     want_query += temp_w #add temp list tp original list
     not_query += temp_n
