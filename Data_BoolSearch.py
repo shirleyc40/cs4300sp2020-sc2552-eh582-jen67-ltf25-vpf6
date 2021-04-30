@@ -371,7 +371,6 @@ def main(want_query,not_query,price_range,item_list, inv_idx, prices):
     else: 
         for i in range(len(want_words)):
             for j in range(len(not_want_words)):
-                print("here")
                 if not_want_words[j][0].lower() in inv_idx:
                     restr_not_found = False
                 doc_list = boolean_search(want_words[i][0],not_want_words[j][0],inv_idx,price_range, prices)

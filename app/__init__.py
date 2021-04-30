@@ -256,7 +256,7 @@ def process_query():
   for i in range(1,9046):
     if i in temp:
       item = temp[i]
-      toks = tokenize(item['description'])
+      toks = tokenize(item['name']) + tokenize(item['description'])
       counts = Counter(toks)
       for word, value in counts.items():
         if word in inverted_idx.keys():
@@ -269,7 +269,7 @@ def process_query():
   query_toks = tokenize(ingredients)
   food_toks = tokenize(food_type)
 
-  veg = ['beef', 'pork', 'lamb', 'veal', 'chicken', 'duck', 'turkey', 'goose', 'sausage', 'pepperoni', 'ham', 'bacon', 'meatballs', 'prosciutto', 'fish']
+  veg = ['beef', 'pork', 'lamb', 'veal', 'chicken', 'duck', 'turkey', 'goose', 'sausage', 'pepperoni', 'ham', 'bacon', 'meatballs', 'prosciutto', 'fish', 'seafood']
   fish = ['salmon', 'tuna', 'tilapia']
   shellfish = ['crab', 'clams', 'mussels', 'shrimp', 'anchovies', 'scallops', 'calamari', 'lobster', 'oysters', 'crayfish', 'octopus', 'squid']
   cheese = ['mozzarella', 'parmesan', 'ricotta']
@@ -281,7 +281,8 @@ def process_query():
     'shellfish': shellfish,
     'tree nuts': ['almond', 'brazil nut', 'cashew', 'chestnut', 'filbert', 'hazelnut', 'hickory nut', 'macadamia nut', 'pecan', 'pistachio', 'walnut'],
     'fish': fish,
-    'cheese': cheese
+    'cheese': cheese,
+    'seafood': ['fish', 'shellfish'] + fish + shellfish
   }
   restrictions.update(dict.fromkeys(['dairy', 'dairy free', 'lactose intolerant'], dairy))
   restrictions.update(dict.fromkeys(['gluten', 'gluten free'], gluten))
@@ -289,12 +290,12 @@ def process_query():
   for restriction in query_toks:
     if restriction in restrictions:
       if restriction == 'shellfish' or restriction == 'tree nuts' or restriction == 'dairy' \
-      or restriction == 'gluten' or restriction == 'fish' or restriction == 'cheese':
+      or restriction == 'gluten' or restriction == 'fish' or restriction == 'cheese' or restriction == 'seafood':
         query_toks += restrictions[restriction]
       else:
         query_toks.remove(restriction)
         query_toks += restrictions[restriction]
-        food_toks.append(restriction)
+        # food_toks.append(restriction)
 
 
   reviews = {}
