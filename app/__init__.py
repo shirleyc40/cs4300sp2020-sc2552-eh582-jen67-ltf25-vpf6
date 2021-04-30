@@ -302,7 +302,7 @@ def process_query():
 
   # if len(M) == 0:
   #   M = [float(x) for x in range(1,len(blob)+1)]
-  print("M: ", len(M[0]))
+  # print("M: ", len(M[0]))
   if (len(M[0]) == 2907 and city == 'austin' and not M[1] == "no_err") or (len(M[0]) == 6138 and city == 'atlanta' and not M[1] == "no_err"):
     return make_response({"error": "No restaurants found"})
 
@@ -340,6 +340,9 @@ def process_query():
         result[rest]['stars'] = star
         total.append({rest: result[rest]})
       counter += 1
+    if M[1] == "no_restr":
+      # print("HERE")
+      return make_response({"res": total, "error": "None of the items contained your dietary restrictions"})
     return make_response({"res": total})
 
 

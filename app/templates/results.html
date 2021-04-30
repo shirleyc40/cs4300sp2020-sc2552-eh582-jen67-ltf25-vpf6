@@ -16,12 +16,15 @@
         </div>
     </div>
     <div class="results">
+        {%if data.error%}
+            <h1> {{data['error']}} </h1>
+        {% endif %}
         {%for x in data['res']%}
         <div class="shadow p-3 mb-2 rounded result">
             {%for d, value in x.items()%}
-            <p class='rest-title'>{{d[:-3].capitalize()}}<span class="rating"> {{d[-3:]}} <i
+            <p class='rest-title'>{{d.capitalize()}}<span class="rating"> {{value.stars}} <i
                         class="fa fa-star"></i></span></p>
-            {% for item in value %}
+            {% for item in value['items'] %}
             <span class="item-name">{{item.name.capitalize()}}</span> ({{item.price}}): <span
                 class="item-des">{{item.description}}</span>
             {% endfor %}
