@@ -296,6 +296,25 @@ def process_query():
         query_toks += restrictions[restriction]
         food_toks.append(restriction)
 
+
+  reviews = {}
+  for food in query_toks:
+    q = "SELECT * FROM reviews WHERE (reviews.restrictions LIKE '%%' || '" + food + "' || '%%')"
+    get = db.session.execute(q).fetchall()
+    r = []
+    for i in get:
+      rev_schema = ReviewSchema()
+      r.append(rev_schema.dump(i))
+    for rev in r:
+      if rev['stars'] > 2:
+        if rev['restaurant'] not in reviews:
+          reviews[rev['restaurant']] = {}
+          reviews[rev['restaurant']][food] = 1 
+        elif food not in reviews[rev['restaurant']]:
+          reviews[rev['restaurant']][food] = 1 
+        elif food in reviews[rev['restaurant']]:
+          reviews[rev['restaurant']][food] += 1 
+
   M = main(food_toks,query_toks,price_range,npitems, inverted_idx, prices)
   # for q_tok in query_toks:
   #   M = boolean_search(food_type, q_tok, inverted_idx, price_range, prices)
@@ -338,6 +357,8 @@ def process_query():
         result[rest]['address'] = addr
         result[rest]['link'] = link
         result[rest]['stars'] = star
+        if rest in reviews:
+          result[rest]['users'] = reviews[rest]
         total.append({rest: result[rest]})
       counter += 1
     if M[1] == "no_restr":
