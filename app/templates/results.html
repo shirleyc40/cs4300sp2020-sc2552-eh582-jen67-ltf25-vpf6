@@ -6,7 +6,7 @@
         <p id="heading">Search Results...</p>
         <div class="query-row">
             <p class="query-lab">Food Cravings:</p>
-            <p class="shadow-sm value">{{craving}}</p>
+            <p class="value">{{craving}}</p>
         </div>
         <div class="query-row">
             <p class="query-lab">Dietary Restrictions:</p>
@@ -26,7 +26,7 @@
     {%if data.res%}
     <div class="results">
         {%if data.error%}
-            <h1> {{data['error']}} </h1>
+            <div class="alert alert-warning" role="alert"> {{data['error']}} </div>
         {% endif %}
         {%for x in data['res']%}
         {%for d, value in x.items()%}

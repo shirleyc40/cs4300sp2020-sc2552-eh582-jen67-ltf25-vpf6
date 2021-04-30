@@ -342,7 +342,7 @@ def process_query():
       counter += 1
     if M[1] == "no_restr":
       # print("HERE")
-      return make_response({"res": total, "error": "None of the items contained your dietary restrictions"})
+      return make_response({"res": total, "error": "None of the items contained your dietary restrictions but here's what we found for your craving"})
     return make_response({"res": total})
 
 

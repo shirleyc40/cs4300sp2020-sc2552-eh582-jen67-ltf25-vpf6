@@ -16,7 +16,7 @@ $(document).ready(function () {
 
 function submitReview() {
     var xhttp2 = new XMLHttpRequest();
-    xhttp2.open("POST", "http://http://bonappetit-cs2.herokuapp.com/review", true);
+    xhttp2.open("POST", "http://bonappetit-cs2.herokuapp.com/review", true);
     xhttp2.setRequestHeader('Content-Type', 'application/json');
     var restaurant = document.getElementById("restaurantsInput").value;
     var restrictions = document.getElementById("restrictionsInput").value;
@@ -33,6 +33,7 @@ function submitReview() {
 // Basic autocomplete taken from https://www.w3schools.com/howto/howto_js_autocomplete.asp
 function autocomplete(inp, arr) {
     const matchList = document.getElementById('rest-match');
+    var currentFocus;
     /*execute a function when someone writes in the text field:*/
     inp.addEventListener("input", function (e) {
         var val = this.value
@@ -44,10 +45,14 @@ function autocomplete(inp, arr) {
         if (val.length === 0) {
             matches = []
             matchList.innerHTML = '';
+            matchList.style.height = "0px"
         }
         if (matches.length > 0) {
+            const maxPixels = matches.length * 46
+
+            matchList.style.height = Math.min(maxPixels, 200) + 'px'
             const html = matches.map(m => `
-                <div class = "match" >
+                <div class = "match">
                     ${m}
                 </div>
             `).join('');
@@ -60,9 +65,10 @@ function autocomplete(inp, arr) {
                     /*close the list of autocompleted values,
                     (or any other open lists of autocompleted values:*/
                     matchList.innerHTML = '';
+                    matchList.style.height = "0px"
                 });
             }
-        }
+        } else {matchList.style.height = "0px"}
     });
     /*execute a function presses a key on the keyboard:*/
     inp.addEventListener("keydown", function (e) {
@@ -97,6 +103,7 @@ function autocomplete(inp, arr) {
         if (currentFocus < 0) currentFocus = (x.length - 1);
         /*add class "autocomplete-active":*/
         x[currentFocus].classList.add("active");
+        x[currentFocus].scrollIntoView()
     }
     function removeActive(x) {
         /*a function to remove the "active" class from all autocomplete items:*/
@@ -107,6 +114,7 @@ function autocomplete(inp, arr) {
     /*execute a function when someone clicks in the document:*/
     document.addEventListener("click", function (e) {
         matchList.innerHTML = '';
+        matchList.style.height = "0px";
     });
 
 

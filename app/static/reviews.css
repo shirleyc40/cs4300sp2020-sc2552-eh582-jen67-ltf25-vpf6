@@ -11,6 +11,7 @@ h3 {
     position: absolute;
     width: 50%;
     left: 173px;
+    overflow-y: scroll;
 }
 
 .match {
@@ -32,13 +33,13 @@ h3 {
     color: #ffffff;
 }
 .review-container {
-    background-color: #DFEAF6
+    background-color: #DFEAF6;
+    overflow-y: hidden;
 }
 .reviews {
     display: flex;
     height: 80%;
     justify-content: center;
-    align-items: center;
 }
 
 .in-group {
@@ -58,7 +59,8 @@ h3 {
 }
 
 .revform {
-    width: 50%
+    width: 50%;
+    margin-top: 30px
 }
 
 .rate:not(:checked)>input {
