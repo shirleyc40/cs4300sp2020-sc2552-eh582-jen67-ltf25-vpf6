@@ -30,14 +30,14 @@ def search():
 		return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data)
 
 	else:
+		query_price = 'any'
 		output_message = "Dietary Restrictions: " + dietary + ', Kind of Food: ' + typeOfFood 
 		if price != 'any':
-			price = "Under $" + price
+			query_price = "Under $" + price
 		# time.sleep(5)
 		data = requests.get(url, params).json()
 		# print(data)
-
-		return render_template('results.html', dietary = dietary, craving = typeOfFood, price = price, data=data)
+		return render_template('results.html', dietary = dietary, craving = typeOfFood, query_price = query_price, price = price, data=data)
 
 @irsystem.route('/reviews', methods=['POST', 'GET'])
 def review():

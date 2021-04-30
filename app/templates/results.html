@@ -1,35 +1,33 @@
-{% extends "base.html" %} {% block content %} {%if data%}
+{% extends "base.html" %}
+{% from 'macros.html' import restaurantCard %}
+{% block content %}
+{%if data%}
 <div class="res-container">
     <div class="query">
-        <p id="heading">Search Results</p>
-        <div>
-            <p class="query-lab">Food Cravings</p>
-            <p>{{craving}}</p>
+        <p id="heading">Search Results...</p>
+        <div class="query-row">
+            <p class="query-lab">Food Cravings:</p>
+            <p class="shadow-sm value">{{craving}}</p>
         </div>
-        <div>
-            <p class="query-lab">Dietary Restrictions</p>
-            <p>{{dietary}}</p>
+        <div class="query-row">
+            <p class="query-lab">Dietary Restrictions:</p>
+            <p class="value">{{dietary}}</p>
         </div>
-        <div>
-            <p class="query-lab">Price</p>
-            <p>{{price}}</p>
+        <div class="query-row">
+            <p class="query-lab">Price:</p>
+            <p class="value">{{query_price}}</p>
         </div>
+        <button type="button" class="btn btn-dark new"><a href="/" class="goback">
+            New Search</a></button>
     </div>
     <div class="results">
         {%if data.error%}
             <h1> {{data['error']}} </h1>
         {% endif %}
         {%for x in data['res']%}
-        <div class="shadow p-3 mb-2 rounded result">
-            {%for d, value in x.items()%}
-            <p class='rest-title'>{{d.capitalize()}}<span class="rating"> {{value.stars}} <i
-                        class="fa fa-star"></i></span></p>
-            {% for item in value['items'] %}
-            <span class="item-name">{{item.name.capitalize()}}</span> ({{item.price}}): <span
-                class="item-des">{{item.description}}</span>
-            {% endfor %}
-            {% endfor %}
-        </div>
+        {%for d, value in x.items()%}
+        {{restaurantCard(d, value)}}
+        {% endfor %}
         {% endfor %}
     </div>
 </div>

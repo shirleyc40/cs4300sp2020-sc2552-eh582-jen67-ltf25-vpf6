@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="../static/reviews.css"> {% endblock %} {% block content %}
 <script>
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
+    xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             // document.getElementById("demo").innerHTML =
             var rests = JSON.parse(this.responseText);
@@ -13,46 +13,49 @@
     xhttp.open("GET", "http://bonappetit-cs2.herokuapp.com/restaurants", true);
     xhttp.send();
 </script>
-<h3>Thanks for leaving a review!</h3>
-<div class="reviews">
-
-    <form class="revform" autocomplete="off" method="post">
-        <div class="autocomplete">
-            <div class="in-group">
-                <label for="restaurantsInput" class="form-label lab">Restaurant Name: </label>
-                <input class="form-control in" id="restaurantsInput" type="text" name="restaurants" placeholder="Restaurants">
-            </div>
-            <div id="rest-match">
-
-            </div>
-
-
-            <div class="in-group">
-                <label for="restrictionsInput" class="form-label lab">Dietary Restrictions:</label>
-                <input class="form-control in" id="restrictionsInput" type="text" name="restrictions" placeholder="Dietary Restriction">
-            </div>
-            <div class="in-group">
-                <label for="foodTypeInput" class="form-label lab">Food Type: </label>
-                <input class="form-control in" id="foodTypeInput" type="text" name="foodType" placeholder="Type of Food">
-            </div>
-            <div class="in-group">
-                <label class="form-label lab">Rating: </label>
-                <div class="rate">
-                    <input type="radio" id="star5" name="stars" value="5" />
-                    <label for="star5" title="text"></label>
-                    <input type="radio" id="star4" name="stars" value="4" />
-                    <label for="star4" title="text"></label>
-                    <input type="radio" id="star3" name="stars" value="3" />
-                    <label for="star3" title="text"></label>
-                    <input type="radio" id="star2" name="stars" value="2" />
-                    <label for="star2" title="text"></label>
-                    <input type="radio" id="star1" name="stars" value="1" />
-                    <label for="star1" title="text"></label>
-                    <!-- <input id="starsInput" type="text" name="stars" placeholder="Star Rating"> -->
+<div class="review-container">
+    <h3>Thanks for leaving a review!</h3>
+    <div class="reviews">
+        <form class="revform" autocomplete="off" method="post">
+            <div class="autocomplete">
+                <div class="in-group">
+                    <label for="restaurantsInput" class="form-label lab">Restaurant Name: </label>
+                    <input class="form-control in" id="restaurantsInput" type="text" name="restaurants"
+                        placeholder="Restaurants">
                 </div>
-            </div>
+                <div id="rest-match">
 
-            <input type="submit" class="button" value="Submit" onclick="submitReview();"/>
-    </form>
+                </div>
+
+                <div class="in-group">
+                    <label for="restrictionsInput" class="form-label lab">Dietary Restrictions:</label>
+                    <input class="form-control in" id="restrictionsInput" type="text" name="restrictions"
+                        placeholder="Dietary Restriction">
+                </div>
+                <div class="in-group">
+                    <label for="foodTypeInput" class="form-label lab">Food Type: </label>
+                    <input class="form-control in" id="foodTypeInput" type="text" name="foodType"
+                        placeholder="Type of Food">
+                </div>
+                <div class="in-group">
+                    <label class="form-label lab">Rating: </label>
+                    <div class="rate">
+                        <input type="radio" id="star5" name="stars" value="5" />
+                        <label for="star5" title="text"></label>
+                        <input type="radio" id="star4" name="stars" value="4" />
+                        <label for="star4" title="text"></label>
+                        <input type="radio" id="star3" name="stars" value="3" />
+                        <label for="star3" title="text"></label>
+                        <input type="radio" id="star2" name="stars" value="2" />
+                        <label for="star2" title="text"></label>
+                        <input type="radio" id="star1" name="stars" value="1" />
+                        <label for="star1" title="text"></label>
+                    </div>
+                </div>
+
+                <input type="submit" class="button" value="Submit" onclick="submitReview();" />
+        </form>
     </div>
-    {% endblock %}
+</div>
+
+{% endblock %}

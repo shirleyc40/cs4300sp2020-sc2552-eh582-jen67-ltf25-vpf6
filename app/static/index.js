@@ -5,8 +5,14 @@ $(document).ready(function () {
         let name = item_name[index].innerHTML.toLowerCase()
         var text = $(this).text().replace(`${name} :`, '');
         $(this).text(text);
-    })
+    });
+    $("div[data-rating]").each(function () {
+        rating = $(this)[0].dataset.rating
+        const starPercentage = ((rating / 5)+0.005) * 100 + '%'
+        $(this).width(starPercentage)
+    });
 })
+
 
 function submitReview() {
     var xhttp2 = new XMLHttpRequest();
@@ -16,11 +22,11 @@ function submitReview() {
     var restrictions = document.getElementById("restrictionsInput").value;
     var foodType = document.getElementById("foodTypeInput").value;
     // var stars = parseFloat(document.getElementById("starsInput").value);
-    var stars = document.getElementsByName('stars');   
-        for(i = 0; i < stars.length; i++) {
-            if(stars[i].checked)
+    var stars = document.getElementsByName('stars');
+    for (i = 0; i < stars.length; i++) {
+        if (stars[i].checked)
             var star = parseFloat(stars[i].value);
-        }
+    }
     xhttp2.send('{"stars":' + star + ', "restrictions":"' + restrictions + '", "restaurant":"' + restaurant + '", "foodtype":"' + foodType + '"}');
 }
 

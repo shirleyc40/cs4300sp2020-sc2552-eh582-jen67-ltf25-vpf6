@@ -31,12 +31,13 @@ h3 {
     background-color: DodgerBlue !important;
     color: #ffffff;
 }
-
+.review-container {
+    background-color: #DFEAF6
+}
 .reviews {
     display: flex;
     height: 80%;
     justify-content: center;
-    /* center horizontally */
     align-items: center;
 }
 
