@@ -204,6 +204,12 @@ def make_review():
   result = review_schema.dump(review.create())
   return make_response(jsonify({"review": result}), 200) # return new doctor and success code
 
+@app.route('/seereviews', methods=['GET'])
+def get_reviews():
+  get_reviews = Reviews.query.all()
+  review_schema = ReviewSchema(many=True)
+  reviews = review_schema.dump(get_reviews)
+  return make_response(jsonify({"reviews": reviews})) # return all doctors with their reviews
 
 @app.route('/query', methods=['GET'])
 def process_query():
@@ -316,7 +322,7 @@ def process_query():
         elif food in reviews[rev['restaurant']]:
           reviews[rev['restaurant']][food] += 1 
 
-  M = main(food_toks,query_toks,price_range,npitems, inverted_idx, prices)
+  M = main_ML(food_toks,query_toks,price_range,npitems, inverted_idx, prices)
   # for q_tok in query_toks:
   #   M = boolean_search(food_type, q_tok, inverted_idx, price_range, prices)
 
