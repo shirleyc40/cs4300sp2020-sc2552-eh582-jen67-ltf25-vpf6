@@ -4,7 +4,7 @@ import csv
 # import matplotlib.pyplot as plt
 import re
 import json
-# from gensim.models import KeyedVectors
+from gensim.models import KeyedVectors
 
 # #getting list of all restaurants in kaggle dataset
 # restaurants = {}
@@ -152,7 +152,7 @@ def build_inverted_index(msgs):
     for i in range(1,9046):
         if i in temp:
             item = temp[i]
-            toks = tokenize(item['description'])
+            toks = tokenize(item['name']) + tokenize(item['description'])
             counts = Counter(toks)
             for word, value in counts.items():
                 if word in inverted_idx.keys():
