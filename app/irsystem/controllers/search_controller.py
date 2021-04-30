@@ -37,7 +37,7 @@ def search():
 		# time.sleep(5)
 		data = requests.get(url, params).json()
 		# print(data)
-		return render_template('results.html', dietary = dietary, craving = typeOfFood, query_price = query_price, price = price, data=data)
+		return render_template('results.html', dietary = dietary, craving = typeOfFood, query_price = query_price, price = price, location = city.capitalize(), data=data)
 
 @irsystem.route('/reviews', methods=['POST', 'GET'])
 def review():

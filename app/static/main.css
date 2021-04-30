@@ -139,6 +139,7 @@ a:hover {
     background: #555;
   }
 .res-container {
+    min-height: 100%;
     display: flex;
     padding: 16px;
     background-color: #DFEAF6;

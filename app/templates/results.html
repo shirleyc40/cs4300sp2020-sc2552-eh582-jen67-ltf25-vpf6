@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% from 'macros.html' import restaurantCard %}
 {% block content %}
-{%if data%}
 <div class="res-container">
     <div class="query">
         <p id="heading">Search Results...</p>
@@ -17,9 +16,14 @@
             <p class="query-lab">Price:</p>
             <p class="value">{{query_price}}</p>
         </div>
+        <div class="query-row">
+            <p class="query-lab">Location:</p>
+            <p class="value">{{location}}</p>
+        </div>
         <button type="button" class="btn btn-dark new"><a href="/" class="goback">
             New Search</a></button>
     </div>
+    {%if data.res%}
     <div class="results">
         {%if data.error%}
             <h1> {{data['error']}} </h1>
@@ -30,10 +34,10 @@
         {% endfor %}
         {% endfor %}
     </div>
+    {%else%}
+    <div class="no-res"> Sorry, we can't find any restaurants that fit your needs :( </div>
+    {% endif %}
 </div>
-{%else%}
-<div class="no-res"> Sorry, we can't find any restaurants that fit your needs :( </div>
-{% endif %}
 
 
 {% endblock %}
