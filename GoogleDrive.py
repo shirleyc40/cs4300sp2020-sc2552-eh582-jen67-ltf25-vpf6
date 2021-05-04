@@ -7,7 +7,7 @@ import csv
 def get_api_services():
     # define credentials and client secret file paths
     credentials_file_path = './credentials/credentials.json'
-    clientsecret_file_path = './credentials/client_secret_347999455336-aulmc59fl0h5r5nm8a1dfao58c55ukns.apps.googleusercontent.com.json'
+    clientsecret_file_path = './credentials/client_secret.json'
 
     # define scope
     SCOPE = 'https://www.googleapis.com/auth/drive'
@@ -55,13 +55,16 @@ def get_spreadsheet_id(api_service, spreadsheet_name):
 
     return spreadsheet_id
 
-def sheet_to_json(sheets_instance, spreadsheet_id, sheet_name):
+def sheet_to_list(sheets_instance, spreadsheet_id, sheet_name):
     result = sheets_instance.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=sheet_name).execute()
     
-    d = {}
+    d = []
     for i, res in enumerate(result.get('values')):
     	if i > 0:
-    		d[res[0]] = res[1]
+            temp = {}
+            temp['name'] = res[0]
+            temp['ingredients'] = res[1]
+            d.append(temp)
     return d
 
 def get_ingredients():
@@ -69,7 +72,7 @@ def get_ingredients():
 	sheet_name = 'Sheet1'
 	drive, sheets = get_api_services()
 	spreadsheet_id = get_spreadsheet_id(drive, spreadsheet_name)
-	return sheet_to_json(sheets, spreadsheet_id, sheet_name)
+	return sheet_to_list(sheets, spreadsheet_id, sheet_name)
 
 
 

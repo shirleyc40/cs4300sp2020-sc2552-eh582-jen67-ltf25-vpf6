@@ -2,8 +2,74 @@ from collections import Counter
 import math
 import numpy as np
 from nltk.tokenize import TreebankWordTokenizer
+import re
 
-def compute_idf(inv_idx, n_docs, min_df=15, max_df_ratio=0.90):
+treebank_tokenizer = TreebankWordTokenizer()
+
+def tokenize(text):
+    """Returns a list of words that make up the text.
+    
+    Note: for simplicity, lowercase everything.
+    Requirement: Use regular expressions to satisfy this function
+    
+    Params: {text: String}
+    Returns: List
+    """
+    # YOUR CODE HERE
+    t = text.lower()
+    words = re.findall(r'[a-z]+',t)
+    return words
+
+def build_inverted_index(msgs, tokenizer=tokenize):
+    """ Builds an inverted index from the messages.
+    
+    Arguments
+    =========
+    
+    msgs: list of dicts.
+        Each message in this list already has a 'toks'
+        field that contains the tokenized message.
+    
+    Returns
+    =======
+    
+    inverted_index: dict
+        For each term, the index contains 
+        a sorted list of tuples (doc_id, count_of_term_in_doc)
+        such that tuples with smaller doc_ids appear first:
+        inverted_index[term] = [(d1, tf1), (d2, tf2), ...]
+        
+    Example
+    =======
+    
+    >> test_idx = build_inverted_index([
+    ...    {'toks': ['to', 'be', 'or', 'not', 'to', 'be']},
+    ...    {'toks': ['do', 'be', 'do', 'be', 'do']}])
+    
+    >> test_idx['be']
+    [(0, 2), (1, 2)]
+    
+    >> test_idx['not']
+    [(0, 1)]
+    
+    Note that doc_id refers to the index of the document/message in msgs.
+    """
+    # YOUR CODE HERE
+    inverted_index = {}
+    for ind, msg in enumerate(msgs):
+        toks = tokenizer(msg['name']+msg['ingredients'].lower())
+        if 'recipe' in toks:
+            toks.remove('recipe')
+            # print(toks)
+        counts = Counter(toks)
+        for term, count in counts.items():
+            if term in inverted_index:
+                inverted_index[term].append((ind, count))
+            else:
+                inverted_index[term] = [(ind, count)]
+    return inverted_index
+
+def compute_idf(inv_idx, n_docs, min_df=5, max_df_ratio=0.9):
     """ Compute term IDF values from the inverted index.
     Words that are too frequent or too infrequent get pruned.
     
@@ -38,6 +104,7 @@ def compute_idf(inv_idx, n_docs, min_df=15, max_df_ratio=0.90):
     idf = {}
     for term, value in inv_idx.items():
         df = len(value)
+        # print(df/n_docs)
         if df >= min_df and df/n_docs <= max_df_ratio:
             idf[term] = math.log2(n_docs/(1+df))
     return idf
@@ -70,7 +137,7 @@ def compute_doc_norms(index, idf, n_docs):
             norms[doc[0]] += (doc[1]*value)**2
     return np.sqrt(norms)
 
-def index_search(query, index, idf, doc_norms, tokenizer=treebank_tokenizer):
+def index_search(query, index, idf, doc_norms, tokenizer=tokenize):
     """ Search the collection of documents for the given query
     
     Arguments
@@ -110,7 +177,7 @@ def index_search(query, index, idf, doc_norms, tokenizer=treebank_tokenizer):
     
     # YOUR CODE HERE
     num = [0] * len(doc_norms)
-    query_toks = tokenizer.tokenize(query.lower())
+    query_toks = tokenizer(query.lower())
     query_counts = Counter(query_toks)
     #calculate the query norm the same way the doc norms were calculated
     query_norm = 0
@@ -133,6 +200,111 @@ def index_search(query, index, idf, doc_norms, tokenizer=treebank_tokenizer):
     ret = []
     for i in range(len(num)):
         if num[i] != 0 and den[i] != 0:
-            ret.append((num[i]/den[i], i))
+            ret.append((num[i], i,))
     ret.sort(key = lambda x:(-x[0],x[1]))
     return ret 
+
+
+def insertion_cost(message, j):
+    return 1
+
+def deletion_cost(query, i):
+    return 1
+
+def substitution_cost(query, message, i, j):
+    if query[i-1] == message[j-1]:
+        return 0
+    else:
+        return 2
+    
+curr_insertion_function = insertion_cost
+curr_deletion_function = deletion_cost
+curr_substitution_function = substitution_cost
+
+def edit_matrix(query, message):
+    """ calculates the edit matrix
+    
+    Arguments
+    =========
+    
+    query: query string,
+        
+    message: message string,
+    
+    m: length of query + 1,
+    
+    n: length of message + 1,
+    
+    Returns:
+        edit matrix {(i,j): int}
+    """
+    
+    m = len(query) + 1
+    n = len(message) + 1
+    
+    matrix = np.zeros((m, n))
+    for i in range(1, m):
+        matrix[i, 0] = matrix[i-1, 0] + curr_deletion_function(query, i)
+    
+    for j in range(1, n):
+        matrix[0, j] = matrix[0, j-1] + curr_insertion_function(message, j)
+    
+    for i in range(1, m):
+        for j in range(1, n):
+            matrix[i, j] = min(
+                matrix[i-1, j] + curr_deletion_function(query, i), # "down" or delete op
+                matrix[i, j-1] + curr_insertion_function(message, j), # "right" or insert op
+                matrix[i-1, j-1] + curr_substitution_function(query, message, i, j) # "diagnol" or sub op
+            )
+    
+    return matrix
+
+def edit_distance(query, message):
+    """ Edit distance calculator
+    
+    Arguments
+    =========
+    
+    query: query string,
+        
+    message: message string,
+    
+    Returns:
+        edit cost (int)
+    """
+        
+    query = query.lower()
+    message = message.lower()
+    
+    # YOUR CODE HERE
+    matrix = edit_matrix(query, message)
+    return matrix[-1, -1]
+
+def edit_distance_search(query, msgs):
+    """ Edit distance search
+    
+    Arguments
+    =========
+    
+    query: string,
+        The query we are looking for.
+        
+    msgs: list of dicts,
+        Each message in this list has a 'text' field with
+        the raw document.
+    
+    Returns
+    =======
+    
+    result: list of (score, message) tuples.
+        The result list is sorted by score such that the closest match
+        is the top result in the list.
+    
+    """
+    # YOUR CODE HERE
+    ret = []
+    for i, msg in enumerate(msgs):
+        score = edit_distance(query, msg['name'])
+        ret.append((score, i))
+    ret.sort(key=lambda x:x[0])
+    return ret
