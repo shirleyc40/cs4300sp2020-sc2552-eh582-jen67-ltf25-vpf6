@@ -8,6 +8,7 @@ import os
 from flask import Flask, render_template, make_response, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO
+from flask_cors import CORS, cross_origin
 import json
 from marshmallow_sqlalchemy import ModelSchema
 from marshmallow import fields
@@ -18,6 +19,8 @@ import re
 # Configure app
 socketio = SocketIO()
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config.from_object(os.environ["APP_SETTINGS"])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ["DATABASE_URL"]

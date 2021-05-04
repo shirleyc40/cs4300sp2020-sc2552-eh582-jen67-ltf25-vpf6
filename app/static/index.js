@@ -22,7 +22,7 @@ $(document).ready(function () {
 
 function submitReview() {
     var xhttp2 = new XMLHttpRequest();
-    xhttp2.open("POST", "https://bonappetit-cs2.herokuapp.com/review", true);
+    xhttp2.open("POST", "https://bonappetit-final.herokuapp.com/review", true);
     xhttp2.setRequestHeader('Content-Type', 'application/json');
     var restaurant = document.getElementById("restaurantsInput").value;
     var restrictions = document.getElementById("restrictionsInput").value;
