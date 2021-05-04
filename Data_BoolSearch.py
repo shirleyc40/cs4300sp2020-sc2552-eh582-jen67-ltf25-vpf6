@@ -436,13 +436,13 @@ def main_ML(want_query,not_query,price_range,item_list, inv_idx, prices):
     for word in want_query:
         if word in model.key_to_index:
             embed = model.most_similar(word) # get list of most similar words [(word, sim score)]
-            embed = [w[0] for w in embed if w[1] >= 0.5] #only keep if sim score >= 0.5
+            embed = [w[0] for w in embed if w[1] >= 0.65] #only keep if sim score >= 0.5
             temp_w += embed #add words to temp list
     
     for word in not_query:
         if word in model.key_to_index:
             embed = model.most_similar(word)
-            embed = [w[0] for w in embed if w[1] >= 0.5]
+            embed = [w[0] for w in embed if w[1] >= 0.65]
             temp_n += embed
     
     want_query += temp_w #add temp list tp original list
