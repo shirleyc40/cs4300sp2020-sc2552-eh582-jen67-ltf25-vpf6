@@ -20,10 +20,10 @@ import re
 socketio = SocketIO()
 app = Flask(__name__)
 cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 app.config.from_object(os.environ["APP_SETTINGS"])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ["DATABASE_URL"]
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # DB
 db = SQLAlchemy(app)
