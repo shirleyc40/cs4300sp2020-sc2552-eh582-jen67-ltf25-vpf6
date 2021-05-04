@@ -429,7 +429,7 @@ def main_ML(want_query,not_query,price_range,item_list, inv_idx, prices):
     #ML addition: using word embeddings
     #using the gensim library and the pre-trained model:
     #GoogleNews-vectors-negative300 only taking 300 words that are used in our items
-    model = KeyedVectors.load_word2vec_format('smaller_model')
+    model = KeyedVectors.load_word2vec_format('full_model')
     temp_w = []
     temp_n = []
     
