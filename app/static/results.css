@@ -4,6 +4,15 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 }
+.close {
+    border: none;
+    background: none;
+}
+.alert {
+    opacity: 80%;
+    margin-left: 30px;
+    margin-right: 30px;
+}
 .res-container {
   
     min-height: 100%;

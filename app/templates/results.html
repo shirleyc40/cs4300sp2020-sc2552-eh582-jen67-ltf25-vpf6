@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from 'macros.html' import restaurantCard %}
 {% block head %}
-<link rel="stylesheet" href="../static/results.css"> {% endblock %} 
+<link rel="stylesheet" href="../static/results.css"> {% endblock %}
 {% block content %}
 <script>
     function pickSelected(value, type) {
@@ -19,8 +19,8 @@
     }
     function displayMax(value, title) {
         text = decodeHtml(value)
-        obj = JSON.parse(text.replace(/'/g,"\""))
-        var keys = Object.keys(obj);   
+        obj = JSON.parse(text.replace(/'/g, "\""))
+        var keys = Object.keys(obj);
         maxCount = 0;
         maxFood = "";
         for (i = 0; i < keys.length; i++) {
@@ -33,7 +33,20 @@
         $(`#user_${title.replace(" ", "")}`).append(`<p class="user-rating">"<span>${maxCount}</span> user(s) said great for no ${maxFood}"</p>`)
     }
 </script>
+<div class="alert alert-warning alert-dismissible fade show warnings" role="alert">
+    Always check with your server before ordering!
+    <button type="button" class="close warning">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="alert alert-info alert-dismissible fade show info" role="alert">
+    We added additional dishes based on our ML algorithm
+    <button type="button" class="close inf">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 <div class="res-container">
+
     <div class="query">
         <p id="heading">Search Results...</p>
         <form autocomplete="off" class="results-form">

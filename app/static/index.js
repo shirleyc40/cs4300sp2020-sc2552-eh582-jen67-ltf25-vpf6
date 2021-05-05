@@ -40,13 +40,19 @@ $(document).ready(function () {
     $(".revform").submit(function(e) {
         e.preventDefault();
     });
+    $('.warning').on("click", () => {
+        $('.warnings').hide()
+    })
+    $('.inf').on("click", () => {
+        $('.info').hide()
+    })
 })
 
 
 function submitReview() {
     var xhttp2 = new XMLHttpRequest();
-    //xhttp2.open("POST", "https://bonappetit-final.herokuapp.com/review", true);
-    xhttp2.open("POST", "http://localhost:5000/review", true);
+    xhttp2.open("POST", "https://bonappetit-final.herokuapp.com/review", true);
+    //xhttp2.open("POST", "http://localhost:5000/review", true);
     xhttp2.setRequestHeader('Content-Type', 'application/json');
     var restaurant = document.getElementById("restaurantsInput").value;
     var restrictions = document.getElementById("restrictionsInput").value;
