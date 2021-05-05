@@ -62,6 +62,7 @@ class MenuItems(db.Model):
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
   name = db.Column(db.String, nullable=False)
   description = db.Column(db.String, nullable=False)
+  better = db.Column(db.String, nullable=False)
   restaurant = db.Column(db.String, db.ForeignKey("restaurants.id"))
   price = db.Column(db.String, nullable=False)
   city = db.Column(db.String, nullable=False)
@@ -71,9 +72,10 @@ class MenuItems(db.Model):
     db.session.commit()
     return self
 
-  def __init__(self, name, description, restaurant, price, city):
+  def __init__(self, name, description, better, restaurant, price, city):
     self.name = name
     self.description = description
+    self.better = better
     self.restaurant = restaurant
     self.price = price
     self.city = city
@@ -130,6 +132,7 @@ class MenuItemsSchema(ModelSchema):
     name = fields.String(required=True)
     price = fields.String(required=True)
     description = fields.String(required=True)
+    better = fields.String()
     restaurant = fields.String()
     city = fields.String()
 
@@ -171,9 +174,14 @@ def pop():
   #   restaurant.id = name
   #   result = restaurant_schema.dump(restaurant.create())
 
-  with open('new_items.json') as f:
+  with open('items.json') as f:
     data = json.load(f)
-  for item in data:
+
+  with open('new_items.json') as p:
+    d = json.load(p)
+
+  for i, item in enumerate(data):
+    item['better'] = d[i]['description']
     items_schema = MenuItemsSchema()
     item = items_schema.load(item)
     result = items_schema.dump(item.create())
@@ -265,7 +273,7 @@ def process_query():
   for i in range(1,9046):
     if i in temp:
       item = temp[i]
-      toks = tokenize(item['name']) + tokenize(item['description'])
+      toks = tokenize(item['name']) + tokenize(item['better'])
       counts = Counter(toks)
       for word, value in counts.items():
         if word in inverted_idx.keys():
