@@ -1,8 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Kameron&display=swap');
 h3 {
-    margin-left: 16px
+    color: white
 }
-
+body {
+    background-image: url("reviews.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 .autocomplete {
     position: relative;
 }
@@ -33,14 +38,13 @@ h3 {
     color: #ffffff;
 }
 .review-container {
-    background-color: #DFEAF6;
     overflow-y: hidden;
+    height: fit-content;
     padding: 40px;
 }
 .reviews {
     display: flex;
     height: 80%;
-    justify-content: center;
 }
 
 .in-group {
@@ -51,7 +55,8 @@ h3 {
 
 .lab {
     flex: 0.4;
-    font-size: 18px
+    font-size: 18px;
+    color:white
 }
 
 .in, .rate {
@@ -74,7 +79,7 @@ h3 {
     white-space: nowrap;
     cursor: pointer;
     font-size: 30px;
-    color: #ccc;
+    color: #ebe4dc;
 }
 
 .rate > label:before {

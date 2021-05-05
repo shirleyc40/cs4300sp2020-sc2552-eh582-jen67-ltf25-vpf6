@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% from 'macros.html' import restaurantCard %}
+{% block head %}
+<link rel="stylesheet" href="../static/results.css"> {% endblock %} 
 {% block content %}
 <script>
     function pickSelected(value, type) {
