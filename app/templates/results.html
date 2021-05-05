@@ -15,7 +15,7 @@
         txt.innerHTML = html;
         return txt.value;
     }
-    function displayMax(value) {
+    function displayMax(value, title) {
         text = decodeHtml(value)
         obj = JSON.parse(text.replace(/'/g,"\""))
         var keys = Object.keys(obj);   
@@ -28,7 +28,7 @@
                 maxFood = keys[i]
             }
         }
-        $('#user-reviews').append(`<p class="user-rating">"<span>${maxCount}</span> user(s) said great for no ${maxFood}"</p>`)
+        $(`#user_${title.replace(" ", "")}`).append(`<p class="user-rating">"<span>${maxCount}</span> user(s) said great for no ${maxFood}"</p>`)
     }
 </script>
 <div class="res-container">
