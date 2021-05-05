@@ -1,32 +1,75 @@
 {% extends "base.html" %}
 {% from 'macros.html' import restaurantCard %}
 {% block content %}
+<script>
+    function pickSelected(value, type) {
+        $(`#${type}drop option`).each((e, obj) => {
+            if ($(obj).val() === value) {
+                $(obj).attr("selected", "selected");
+                return;
+            }
+        })
+    }
+    function decodeHtml(html) {
+        var txt = document.createElement("textarea");
+        txt.innerHTML = html;
+        return txt.value;
+    }
+    function displayMax(value, title) {
+        text = decodeHtml(value)
+        obj = JSON.parse(text.replace(/'/g,"\""))
+        var keys = Object.keys(obj);   
+        maxCount = 0;
+        maxFood = "";
+        for (i = 0; i < keys.length; i++) {
+            var v = obj[keys[i]];
+            if (v > maxCount) {
+                maxCount = v;
+                maxFood = keys[i]
+            }
+        }
+        $(`#user_${title.replace(" ", "")}`).append(`<p class="user-rating">"<span>${maxCount}</span> user(s) said great for no ${maxFood}"</p>`)
+    }
+</script>
 <div class="res-container">
     <div class="query">
         <p id="heading">Search Results...</p>
-        <div class="query-row">
-            <p class="query-lab">Food Cravings:</p>
-            <p class="value">{{craving}}</p>
-        </div>
-        <div class="query-row">
-            <p class="query-lab">Dietary Restrictions:</p>
-            <p class="value">{{dietary}}</p>
-        </div>
-        <div class="query-row">
-            <p class="query-lab">Price:</p>
-            <p class="value">{{query_price}}</p>
-        </div>
-        <div class="query-row">
-            <p class="query-lab">Location:</p>
-            <p class="value">{{location}}</p>
-        </div>
-        <button type="button" class="btn btn-dark new"><a href="/" class="goback">
-            New Search</a></button>
+        <form autocomplete="off" class="results-form">
+            <div class="query-row">
+                <label for="food" class="query-lab form-label">Food Cravings:</label>
+                <input type="text" name="type" value="{{craving}}" class="form-control value" id="food">
+            </div>
+            <div class="query-row">
+                <label for="diet" class="query-lab form-label">Dietary Restrictions:</label>
+                <input type="text" name="dietary" value="{{dietary}}" class="form-control value" id="diet" required>
+            </div>
+            <div class="query-row">
+                <label for="pricedrop" class="query-lab">Price:</label>
+                <select class="form-select" name="price" id="pricedrop">
+                    <option value="any">Any</option>
+                    <option value="10">Less than $10</option>
+                    <option value="20">Less than $20</option>
+                    <option value="30">Less than $35</option>
+                </select>
+                <script>pickSelected("{{price}}", "price")</script>
+            </div>
+            <div class="query-row">
+                <label for="locationdrop" class="query-lab">Location:</label>
+                <select class="form-select" name="location" id="locationdrop">
+                    <option value="austin">Austin</option>
+                    <option value="atlanta">Atlanta</option>
+                </select>
+                <script>pickSelected("{{location}}", "location")</script>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submit">Submit </button>
+        </form>
     </div>
+
+
     {%if data.res%}
     <div class="results">
         {%if data.error%}
-            <div class="alert alert-warning" role="alert"> {{data['error']}} </div>
+        <div class="alert alert-warning" role="alert"> {{data['error']}} </div>
         {% endif %}
         {%for x in data['res']%}
         {%for d, value in x.items()%}

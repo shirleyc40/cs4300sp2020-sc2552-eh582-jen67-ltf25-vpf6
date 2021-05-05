@@ -12,6 +12,7 @@
     };
 
     xhttp.open("GET", "https://bonappetit-final.herokuapp.com/restaurants", true);
+    //xhttp.open("GET", "http://localhost:5000/restaurants", true);
     xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.send();
@@ -24,16 +25,15 @@
                 <div class="in-group">
                     <label for="restaurantsInput" class="form-label lab">Restaurant Name: </label>
                     <input class="form-control in" id="restaurantsInput" type="text" name="restaurants"
-                        placeholder="Restaurants">
+                        placeholder="Restaurants" required/>
                 </div>
                 <div id="rest-match">
 
                 </div>
-
                 <div class="in-group">
                     <label for="restrictionsInput" class="form-label lab">Dietary Restrictions:</label>
                     <input class="form-control in" id="restrictionsInput" type="text" name="restrictions"
-                        placeholder="Dietary Restriction">
+                        placeholder="Dietary Restriction" required/>
                 </div>
                 <div class="in-group">
                     <label for="foodTypeInput" class="form-label lab">Food Type: </label>
@@ -42,17 +42,28 @@
                 </div>
                 <div class="in-group">
                     <label class="form-label lab">Rating: </label>
+                    <!--html and css inspired from https://codepen.io/jamesbarnett/pen/vlpkh-->
                     <div class="rate">
                         <input type="radio" id="star5" name="stars" value="5" />
                         <label for="star5" title="text"></label>
+                        <input type="radio" id="star4.5" name="stars" value="4.5" />
+                        <label for="star4.5" class="half" title="text"></label>
                         <input type="radio" id="star4" name="stars" value="4" />
                         <label for="star4" title="text"></label>
+                        <input type="radio" id="star3.5" name="stars" value="3.5" />
+                        <label for="star3.5" class="half" title="text"></label>
                         <input type="radio" id="star3" name="stars" value="3" />
                         <label for="star3" title="text"></label>
+                        <input type="radio" id="star2.5" name="stars" value="2.5" />
+                        <label for="star2.5" class="half" title="text"></label>
                         <input type="radio" id="star2" name="stars" value="2" />
                         <label for="star2" title="text"></label>
+                        <input type="radio" id="star1.5" name="stars" value="1.5" />
+                        <label for="star1.5" class="half" title="1.5"></label>
                         <input type="radio" id="star1" name="stars" value="1" />
-                        <label for="star1" title="text"></label>
+                        <label for="star1" title="1"></label>
+                        <input type="radio" id="star.5" name="stars" value="0.5" />
+                        <label for="star.5" class="half" title="1/2"></label>
                     </div>
                 </div>
 

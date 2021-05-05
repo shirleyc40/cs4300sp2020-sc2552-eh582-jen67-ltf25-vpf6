@@ -1,6 +1,5 @@
 {% macro restaurantCard(d, value) %}
 <div class="shadow p-4 mb-6 rounded result">
-
     <div class="top">
         <div>
             <a href="{{value.link}}">
@@ -24,10 +23,11 @@
             <p class="rest-address">{{value.address}}</p>
         </div>
         {%if value['users']%}
-        <div>
-            {%for food, count in value['users'].items()%}
-            <p class="user-rating">"<span>{{count}}</span> user(s) said great for no {{food}}"</p>
-            {% endfor %}
+        <div id = "user_{{d.replace(' ', '')}}">
+            <script>
+                var data = '{{value["users"]}}'
+                displayMax(data, "{{d}}")
+            </script>
         </div>
         {% endif %}
     </div>

@@ -8,6 +8,7 @@ project_name = "Bon APPétit"
 net_id = "Elina Hvirtsman: eh582, Julia Ng: jen67, Shirley Chen: sc2552, Luke Forsman: ltf25, Vincent Ferraiuolo: vpf6"
 
 @irsystem.route('/', methods=['GET'])
+@irsystem.route('/results', methods=['GET'])
 def search():
 	url='http://bonappetit-final.herokuapp.com/query'
 	#url='http://localhost:5000/query'
@@ -32,12 +33,12 @@ def search():
 	else:
 		query_price = 'any'
 		output_message = "Dietary Restrictions: " + dietary + ', Kind of Food: ' + typeOfFood 
-		if price != 'any':
-			query_price = "Under $" + price
+		# if price != 'any':
+		# 	query_price = "Less Than $" + price
 		# time.sleep(5)
 		data = requests.get(url, params).json()
 		# print(data)
-		return render_template('results.html', dietary = dietary, craving = typeOfFood, query_price = query_price, price = price, location = city.capitalize(), data=data)
+		return render_template('results.html', dietary = dietary, craving = typeOfFood, query_price = query_price, price = price, location = city, data=data)
 
 @irsystem.route('/reviews', methods=['POST', 'GET'])
 def review():
