@@ -127,8 +127,5 @@ body {
 }
 
 .no-res {
-    position: fixed;
-    /* or absolute */
-    top: 50%;
-    left: 40%;
+    color:white;
 }
