@@ -35,6 +35,7 @@ h3 {
 .review-container {
     background-color: #DFEAF6;
     overflow-y: hidden;
+    padding: 40px;
 }
 .reviews {
     display: flex;
@@ -53,36 +54,40 @@ h3 {
     font-size: 18px
 }
 
-.in,
-.rate {
+.in, .rate {
     flex: 1
-}
+}   
 
 .revform {
     width: 50%;
     margin-top: 30px
 }
 
-.rate:not(:checked)>input {
+.rate >input {
     display: none
 }
 
-.rate:not(:checked)>label {
+.rate > label {
     float: right;
-    width: 1em;
     overflow: hidden;
+    font-size: 2rem;
     white-space: nowrap;
     cursor: pointer;
     font-size: 30px;
     color: #ccc;
 }
 
-.rate:not(:checked)>label:before {
+.rate > label:before {
     font-family: FontAwesome;
     content: "\f005";
     /* Star */
 }
-
+.rate .half:before {
+    font-family: FontAwesome;
+    content: "\f089 "; /* half star no outline */
+    position: absolute;
+    padding-right: 0;
+}
 .rate:not(:checked)>label:hover,
 .rate:not(:checked)>label:hover~label,
 .rate>input:checked~label,

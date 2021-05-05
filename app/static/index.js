@@ -1,5 +1,13 @@
 
 $(document).ready(function () {
+    let searchbtn1 = document.querySelector('#inputs #submit');
+    let searchbtn2 = document.querySelector('.results-form #submit');
+    if (searchbtn1 !== null && searchbtn1.innerHTML !== "Submit") {
+        searchbtn1.innerHTML = 'Submit';
+    }
+    if (searchbtn2 !== null && searchbtn2.innerHTML !== "Submit") {
+        searchbtn2.innerHTML = 'Submit';
+    }
     const item_name = $('.item-name')
 
     $('.item-des').each(function (index) {
@@ -17,12 +25,28 @@ $(document).ready(function () {
         const starPercentage = ((rating / 5) + 0.005) * 100 + '%'
         $(this).width(starPercentage)
     });
+
+    $(".global-search").on("submit", () => {
+        if ($('#input1').val() !== "") {
+            console.log("hi")
+            searchbtn1.innerHTML = '<i class = "fa fa-circle-o-notch fa-spin"></i>  Please wait...';
+        }
+    })
+    $(".results-form").on("submit", () => {
+        if ($('#diet').val() !== "") {
+            searchbtn2.innerHTML = '<i class = "fa fa-circle-o-notch fa-spin"></i>  Please wait...';
+        }
+    })
+    $(".revform").submit(function(e) {
+        e.preventDefault();
+    });
 })
 
 
 function submitReview() {
     var xhttp2 = new XMLHttpRequest();
-    xhttp2.open("POST", "https://bonappetit-final.herokuapp.com/review", true);
+    //xhttp2.open("POST", "https://bonappetit-final.herokuapp.com/review", true);
+    xhttp2.open("POST", "http://localhost:5000/review", true);
     xhttp2.setRequestHeader('Content-Type', 'application/json');
     var restaurant = document.getElementById("restaurantsInput").value;
     var restrictions = document.getElementById("restrictionsInput").value;
@@ -33,7 +57,14 @@ function submitReview() {
         if (stars[i].checked)
             var star = parseFloat(stars[i].value);
     }
-    xhttp2.send('{"stars":' + star + ', "restrictions":"' + restrictions + '", "restaurant":"' + restaurant + '", "foodtype":"' + foodType + '"}');
+    if (restaurant !== '' && restrictions !== '') xhttp2.send('{"stars":' + star + ', "restrictions":"' + restrictions + '", "restaurant":"' + restaurant + '", "foodtype":"' + foodType + '"}');
+    xhttp2.onreadystatechange = function () {
+        if (xhttp2.readyState == 4) {
+            $('.review-container').prepend("<div class='alert alert-success' role='alert'>Submitted! Thank you</div>")
+            setTimeout(() => document.location.reload(), 2000);
+        }
+    }
+    
 }
 
 // Basic autocomplete taken from https://www.w3schools.com/howto/howto_js_autocomplete.asp
@@ -123,36 +154,6 @@ function autocomplete(inp, arr) {
         matchList.style.height = "0px";
     });
 
-
-    //     inp.addEventListener("keydown", function (e) {
-    //         console.log(this)
-    //         var x = document.getElementById(this.id + "autocomplete-list");
-    //         if (x) x = x.getElementsByTagName("div");
-    //         if (e.keyCode == 40) {
-    //             /*If the arrow DOWN key is pressed,
-    //             increase the currentFocus variable:*/
-    //             currentFocus++;
-    //             /*and and make the current item more visible:*/
-    //             addActive(x);
-    //         } else if (e.keyCode == 38) { //up
-    //             /*If the arrow UP key is pressed,
-    //             decrease the currentFocus variable:*/
-    //             currentFocus--;
-    //             /*and and make the current item more visible:*/
-    //             addActive(x);
-    //         } else if (e.keyCode == 13) {
-    //             /*If the ENTER key is pressed, prevent the form from being submitted,*/
-    //             e.preventDefault();
-    //             if (currentFocus > -1) {
-    //                 /*and simulate a click on the "active" item:*/
-    //                 if (x) x[currentFocus].click();
-    //             }
-    //         }
-    //     });
-
-
-
-    // })
 }
 
 
