@@ -171,7 +171,7 @@ def pop():
   #   restaurant.id = name
   #   result = restaurant_schema.dump(restaurant.create())
 
-  with open('app/items.json') as f:
+  with open('new_items.json') as f:
     data = json.load(f)
   for item in data:
     items_schema = MenuItemsSchema()
@@ -343,8 +343,8 @@ def process_query():
       items = item_schema.dump(get_item)
       restaurant = items['restaurant']
       if restaurant in result:
-        if len(result[restaurant]['items'])<5:
-          result[restaurant]['items'].append(items)
+        # if len(result[restaurant]['items'])<5:
+        result[restaurant]['items'].append(items)
       else:
         result[restaurant] = {}
         result[restaurant]['items'] = [items]

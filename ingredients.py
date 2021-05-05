@@ -15,16 +15,24 @@ inv_idx = build_inverted_index(docs)
 idf = compute_idf(inv_idx, n_docs)
 doc_norms = compute_doc_norms(inv_idx, idf, n_docs)
 
-for item in data:
+sim_matrix = build_name_sims_jac(n_docs, data, docs)
+
+for i, item in enumerate(data):
   # lev = edit_distance_search(item['name'], docs)
   # if lev[0][0] < 15:
   #   print(item['name'], docs[lev[0][1]]['name'], lev[0][0])
   #   item['description'] += ', ' + docs[lev[0][1]]['ingredients']
-  cos_sim = index_search(item['name'], inv_idx, idf, doc_norms)
+  # cos_sim = index_search(item['name'], inv_idx, idf, doc_norms)
   # print(cos_sim)
-  if cos_sim and cos_sim[0][0] > 0.7:
-      print(item['name'], docs[cos_sim[0][1]]['name'], cos_sim[0][0])
-      item['description'] += ', ' + docs[cos_sim[0][1]]['ingredients']
+  jaccard = get_ranked_movies(i, docs, sim_matrix)
+
+  if jaccard[0][1] > 0.7:
+      print(item['name'], jaccard[0][0]['name'], jaccard[0][1])
+      item['description'] += ', ' + jaccard[0][0]['ingredients']
+
+  # if cos_sim and cos_sim[0][0] > 0.7:
+  #     print(item['name'], docs[cos_sim[0][1]]['name'], cos_sim[0][0])
+  #     item['description'] += ', ' + docs[cos_sim[0][1]]['ingredients']
 
 #print(cos_sim)
 jsonString = json.dumps(data)

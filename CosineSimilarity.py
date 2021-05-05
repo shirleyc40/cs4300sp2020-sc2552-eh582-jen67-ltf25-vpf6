@@ -308,3 +308,64 @@ def edit_distance_search(query, msgs):
         ret.append((score, i))
     ret.sort(key=lambda x:x[0])
     return ret
+
+def build_name_sims_jac(n_docs, menu_items, ingredients, n_items=9046):
+    """Returns a matrix of size num_movies x num_movies where entry [i,j]
+       should be the Jaccard similarity between the category sets for movies i and j. 
+        
+    Notes: 
+        - Movies sometimes contain *duplicate* categories! You should only count a category once.
+        - A movie should have a Jaccard similarity of 1.0 with itself.
+        - If a movie has no categories, then its Jaccard similarity with other movies is 0.
+    
+    Params: {num_movies: Integer,
+             input_data: List<Dictionary>}
+    Returns: np.ndarray 
+    """
+    # YOUR CODE HERE
+    name_sim_jac = np.zeros((n_items, n_docs))
+    for i, item in enumerate(menu_items):
+        set_categories1 = set(tokenize(item['name']))
+        for j, recipe in enumerate(ingredients):
+            set_categories2 = set(tokenize(recipe['name']))
+            if "recipe" in set_categories2:
+                set_categories2.remove("recipe")
+            if len(set_categories1) == 0 or len(set_categories2) == 0:
+                name_sim_jac[i, j] = 0
+            else:
+                num = len(set_categories1.intersection(set_categories2))
+                den = len(set_categories1.union(set_categories2))
+                name_sim_jac[i, j] = num/den
+    return name_sim_jac
+
+# movie_name_to_index = {name:movie_id_to_index[movie_name_to_id[name]] for name in [d['movie_name'] for d in data]}
+# movie_index_to_name = {v:k for k,v in movie_name_to_index.items()}
+
+def get_ranked_movies(item_id, docs, sim_matrix):
+    """
+    Return sorted rankings (most to least similar) of movies as 
+    a list of two-element tuples, where the first element is the 
+    movie name and the second element is the similarity score
+    
+    This function will sort movies with the same score
+    according to how these movies were ordered in the original data.
+    
+    Params: {mov: String,
+             sim_matrix: np.ndarray}
+    Returns: List<Tuple>
+    """
+    
+    # Get movie index from movie name
+    item_idx = item_id
+    
+    # Get list of similarity scores for movie
+    score_lst = sim_matrix[item_idx]
+    mov_score_lst = [(docs[i], s) for i,s in enumerate(score_lst)]
+    
+    # Do not account for movie itself in ranking
+    mov_score_lst = mov_score_lst[:item_idx] + mov_score_lst[item_idx+1:]
+    
+    # Sort rankings by score
+    mov_score_lst = sorted(mov_score_lst, key=lambda x: -x[1])
+    
+    return mov_score_lst
